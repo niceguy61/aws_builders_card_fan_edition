@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { useGame } from '../store/useGame';
 import BuilderCard from '../components/BuilderCard';
+import { CARD_MAP, cardName } from '../game/cards';
 import { calcBoard, scorePlayer } from '../game/engine';
 import { botDraftPick } from '../game/bot';
+import { useLocale, tr, tLog, logIcon } from '../i18n';
 import type { CardInstance } from '../game/engine';
 
 // 매트 % 좌표 (mat-2p.png 8401x7201 기준 실측)
@@ -53,6 +55,9 @@ export default function Observer() {
   const board = calcBoard(me?.played ?? []);
   const sH = scorePlayer(human);
   const sB = scorePlayer(bot);
+  const locale = useLocale((s) => s.locale);
+  const t = (k: Parameters<typeof tr>[1], v?: Record<string, string | number>) => tr(locale, k, v);
+  const cardNameOf = (id: string) => { const d = CARD_MAP[id]; return d ? cardName(d, locale) : id; };
 
   // 게임 뷰와 동일한 자동 진행 (봇 턴·봇 드래프트)
   useEffect(() => {
@@ -80,11 +85,11 @@ export default function Observer() {
         <img src="/mat/mat-2p.png" className="obs-mat" alt="2P game mat" draggable={false} />
 
         {/* 콘솔 덱 */}
-        <div className="obs-zone" style={Z.freeDeck}><Tag>무료 {g.freeDeck.length}</Tag></div>
-        <div className="obs-zone" style={Z.costDeck}><Tag>유료 {g.costDeck.length}</Tag></div>
+        <div className="obs-zone" style={Z.freeDeck}><Tag>{t('obsFree', { n: g.freeDeck.length })}</Tag></div>
+        <div className="obs-zone" style={Z.costDeck}><Tag>{t('obsPaid', { n: g.costDeck.length })}</Tag></div>
         <div className="obs-zone" style={Z.waDeck}>
           {g.waStack[0] && <ObsCard card={{ uid: 'ob-wa', cardId: g.waStack[0] }} scale={0.32} />}
-          <Tag>WA {g.waStack.length}</Tag>
+          <Tag>{t('obsWa', { n: g.waStack.length })}</Tag>
         </div>
 
         {/* 슬롯 4+1 (+확장팩 1 비움) */}
@@ -97,72 +102,72 @@ export default function Observer() {
         <div className="obs-zone" style={Z.slots[4]}>
           {g.consoleCost && <ObsCard card={{ uid: 'ob-cost', cardId: g.consoleCost.cardId }} />}
         </div>
-        <div className="obs-zone" style={Z.slots[5]}><Tag>확장팩용 · 비움</Tag></div>
+        <div className="obs-zone" style={Z.slots[5]}><Tag>{t('obsExp')}</Tag></div>
 
         {/* 아키텍처 (현재 턴 플레이어) */}
         <div className="obs-zone obs-arch" style={Z.arch}>
           <div className="obs-fan">
             {(cur?.played ?? []).map((c) => <ObsCard key={c.uid} card={c} scale={0.36} />)}
           </div>
-          <Tag>{cur?.name} {board.credits}⚡ · 도입 {cur?.adoptsLeft}</Tag>
+          <Tag>{cur?.name} {board.credits}⚡ · {t('adoptsU')} {cur?.adoptsLeft}</Tag>
         </div>
 
         {/* 왼쪽 = 나 */}
-        <div className="obs-zone" style={Z.leftRes}><Tag>자원 {human.resourceDeck.length}</Tag></div>
+        <div className="obs-zone" style={Z.leftRes}><Tag>{t('resDeck', { n: human.resourceDeck.length })}</Tag></div>
         <div className="obs-zone obs-col" style={Z.leftPlayer}>
           <div className="obs-fan">
             {human.hand.map((c) => <ObsCard key={c.uid} card={c} scale={0.3} />)}
           </div>
-          <Tag>나 · 핸드 {human.hand.length}</Tag>
+          <Tag>{t('obsMeHand', { n: human.hand.length })}</Tag>
         </div>
         <div className="obs-zone" style={Z.leftDiscard}>
           {human.discard.length > 0 && <ObsCard card={human.discard[human.discard.length - 1]} scale={0.32} />}
-          <Tag>버림 {human.discard.length}</Tag>
+          <Tag>{t('disPile', { n: human.discard.length })}</Tag>
         </div>
         <div className="obs-zone" style={Z.leftChar}>
-          <Tag>나 VP {sH.vp} · 제거 {human.retired.length}</Tag>
+          <Tag>{t('obsVpRet', { name: human.name, v: sH.vp, r: human.retired.length })}</Tag>
         </div>
 
         {/* 오른쪽 = 봇 */}
-        <div className="obs-zone" style={Z.rightRes}><Tag>자원 {bot.resourceDeck.length}</Tag></div>
+        <div className="obs-zone" style={Z.rightRes}><Tag>{t('resDeck', { n: bot.resourceDeck.length })}</Tag></div>
         <div className="obs-zone obs-col" style={Z.rightPlayer}>
           <div className="obs-fan">
             {bot.hand.map((c) => <ObsCard key={c.uid} card={c} scale={0.3} />)}
           </div>
-          <Tag>{bot.name} · 핸드 {bot.hand.length}</Tag>
+          <Tag>{t('botHand', { name: bot.name, n: bot.hand.length })}</Tag>
         </div>
         <div className="obs-zone" style={Z.rightDiscard}>
           {bot.discard.length > 0 && <ObsCard card={bot.discard[bot.discard.length - 1]} scale={0.32} />}
-          <Tag>버림 {bot.discard.length}</Tag>
+          <Tag>{t('disPile', { n: bot.discard.length })}</Tag>
         </div>
         <div className="obs-zone" style={Z.rightChar}>
-          <Tag>{bot.name} VP {sB.vp} · 제거 {bot.retired.length}</Tag>
+          <Tag>{t('obsVpRet', { name: bot.name, v: sB.vp, r: bot.retired.length })}</Tag>
         </div>
 
         {g.gameOver && (
           <div className="obs-over">
-            🏆 {g.players.find((p) => p.id === g.winnerId)?.name} 승리!
+            {t('obsOver', { name: g.players.find((p) => p.id === g.winnerId)?.name ?? '' })}
           </div>
         )}
       </div>
 
       <aside className="obs-side">
-        <h2>👁 관전</h2>
-        <div className="pill">{g.turnNumber}턴 · {me?.name}</div>
+        <h2>{t('obsTitle')}</h2>
+        <div className="pill">{locale === 'ko' ? `${g.turnNumber}턴` : `Turn ${g.turnNumber}`} · {me?.name}</div>
         <div className="pill gold">⚡ {me?.credits ?? 0}</div>
-        <div className="pill blue">도입 {me?.adoptsLeft ?? 0}</div>
+        <div className="pill blue">{locale === 'ko' ? `도입 ${me?.adoptsLeft ?? 0}` : `Adopt ${me?.adoptsLeft ?? 0}`}</div>
         <div className="pill vp">🏆 WA {g.waStack.length}</div>
-        {g.phase === 'DRAFT' && <div className="hint">드래프트 중… (게임 화면에서 선택)</div>}
+        {g.phase === 'DRAFT' && <div className="hint">{t('obsDraft')}</div>}
         {g.phase === 'PLAY' && !me?.isBot && !g.gameOver && (
-          <div className="hint">나의 턴 — 🎮 게임으로 돌아가서 진행하세요.</div>
+          <div className="hint">{t('obsMyTurn')}</div>
         )}
         <div className="obs-feed">
-          {(g.lastEvents ?? []).map((e, i) => <div key={i} className="combo-chip">✦ {e.text}</div>)}
+          {(g.lastEvents ?? []).map((e, i) => <div key={i} className="combo-chip">✦ {locale === 'ko' ? e.text : (e.en ?? e.text)}</div>)}
         </div>
         <div className="log obs-log">
-          {[...g.log].slice(-10).reverse().map((l, i) => <div key={i}>{l}</div>)}
+          {[...g.log].slice(-10).reverse().map((l, i) => <div key={i}>{logIcon(l.key)} {tLog(l, locale, cardNameOf)}</div>)}
         </div>
-        <button className="btn primary" onClick={goGame}>🎮 게임으로</button>
+        <button className="btn primary" onClick={goGame}>{t('obsGoGame')}</button>
       </aside>
     </div>
   );

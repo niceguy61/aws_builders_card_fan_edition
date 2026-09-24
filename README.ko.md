@@ -23,11 +23,11 @@
 
 ## 📸 스크린샷
 
-| 드래프트 페이즈 | 콘솔 마켓 |
+| 드래프트 페이즈 | 게임 보드 |
 |---|---|
-| ![드래프트 페이즈](docs/screenshots/01-draft.png) | ![콘솔 마켓](docs/screenshots/02-console.png) |
-| 핵심 룰 모달 | 내 핸드 & CPU |
-| ![핵심 룰 모달](docs/screenshots/03-rules.png) | ![내 핸드와 CPU 구역](docs/screenshots/04-hand.png) |
+| ![드래프트 페이즈](docs/screenshots/ko/01-draft.png) | ![게임 보드](docs/screenshots/ko/02-game.png) |
+| 매트 관전 뷰 | 소개 페이지 |
+| ![매트 관전 뷰](docs/screenshots/ko/03-observer.png) | ![소개 페이지](docs/screenshots/ko/04-introduce.png) |
 
 ## ✨ 특징
 

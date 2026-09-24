@@ -174,6 +174,11 @@ html,body{margin:0;padding:0;background:linear-gradient(180deg,#6b3fa0 0%,#4a3aa
 .rules-sec h3{margin:0 0 6px;font-size:15px}
 .rules-sec ul{margin:0;padding-left:18px;font-size:13.5px;line-height:1.65}
 .rules-panel .btn{display:block;margin:4px auto 0}
+/* ?static 스크린샷: framer 초기 애니메이션 강제 완료 (가상시간+WAAPI 동결 회피) */
+html.static-shot .bcard,
+html.static-shot .panel,
+html.static-shot .market-pile,
+html.static-shot .combo-feed{opacity:1 !important;transform:none !important}
 @media(max-width:720px){.table{padding:10px}.bcard{transform-origin:top left}}
 /* Introduce */
 .intro-hero{text-align:center;padding:34px 16px 22px}

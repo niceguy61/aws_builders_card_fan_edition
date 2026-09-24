@@ -12,10 +12,17 @@ interface LocaleStore {
   toggle: () => void;
 }
 
+// 기본 EN (?locale=ko 캡처·공유용 오버라이드, 저장값이 있으면 저장값 우선)
+const urlLocale: Locale =
+  typeof window !== 'undefined' &&
+  new URLSearchParams(window.location.search).get('locale') === 'ko'
+    ? 'ko'
+    : 'en';
+
 export const useLocale = create<LocaleStore>()(
   persist(
     (set) => ({
-      locale: 'en',
+      locale: urlLocale,
       setLocale: (locale) => set({ locale }),
       toggle: () => set((s) => ({ locale: s.locale === 'en' ? 'ko' : 'en' })),
     }),
@@ -46,6 +53,10 @@ const en = {
   free: 'FREE',
   paidFmt: '${c}⚡ paid',
   blindCap: '🎲 Blind (1 adoption)',
+  blindDeck: 'Free deck {n}',
+  paidDeck: 'Paid deck {n}',
+  tipPaidDeck: 'Paid deck (face down). Buying from the paid slot refills from here.',
+  refillLine: '▼ instant refill on buy ▼',
   waPile: 'WA pile {n}',
   waCost: '{c}⚡ (base {b})',
   waSoldOut: 'Sold out',
@@ -80,9 +91,11 @@ const en = {
   disPile: 'Discard {n}',
   pileEmpty: 'Empty',
   retiredPile: 'Retired',
+  retiredCount: '♻ {n}',
   vpAbout: '~{v} VP · {a} AWS',
   cdkTitle: '🛠 AWS CDK — 1 discard → deck top',
   overTitle: '🏆 Game over — last WA taken!',
+  overScore: '{name} — {v} VP · {a} AWS cards {win}',
   overWin: '(WINNER)',
   playAgain: '↻ Play again (PVE)',
   pvpn: 'PVP mode: same engine and action spec — just attach a WebSocket server (state is JSON-serializable).',
@@ -117,7 +130,7 @@ const en = {
   obsExp: 'Expansion · empty',
   obsOver: '{name} wins!',
   obsGoGame: '🎮 To game',
-  obsVpRet: 'VP {v} · retired {r}',
+  obsVpRet: '{name} VP {v} · retired {r}',
   obsWa: 'WA {n}',
   modalTitle: '📖 Key Rules',
   modalEd: 'Based on the official rulebook',
@@ -144,6 +157,10 @@ const ko: Record<StrKey, string> = {
   free: '무료',
   paidFmt: '유료 ${c}⚡',
   blindCap: '🎲 블라인드 (도입 1회)',
+  blindDeck: '무료 덱 {n}장',
+  paidDeck: '유료 덱 {n}장',
+  tipPaidDeck: '유료 덱(뒷면). 유료 슬롯에서 사면 여기서 즉시 리필됩니다.',
+  refillLine: '▼ 구매 즉시 리필됨 ▼',
   waPile: 'WA 더미 {n}장',
   waCost: '비용 {c}⚡ (기본 {b})',
   waSoldOut: '매진',
@@ -178,9 +195,11 @@ const ko: Record<StrKey, string> = {
   disPile: '버린 더미 {n}장',
   pileEmpty: '비었음',
   retiredPile: '제거됨',
+  retiredCount: '♻ {n}장',
   vpAbout: '보유 VP 약 {v} · AWS {a}장',
   cdkTitle: '🛠 AWS CDK — 버린 더미 1장 → 덱 맨 위로',
   overTitle: '🏆 게임 종료 — 마지막 WA 획득!',
+  overScore: '{name} — {v} VP · AWS 카드 {a}장 {win}',
   overWin: '(승리)',
   playAgain: '↻ 다시 하기 (PVE)',
   pvpn: 'PVP 모드: 같은 엔진·같은 액션 스펙으로 WebSocket 서버만 붙이면 즉시 확장 가능 (state JSON 직렬화 완료).',
@@ -215,7 +234,7 @@ const ko: Record<StrKey, string> = {
   obsExp: '확장팩용 · 비움',
   obsOver: '{name} 승리!',
   obsGoGame: '🎮 게임으로',
-  obsVpRet: 'VP {v} · 제거 {r}',
+  obsVpRet: '{name} VP {v} · 제거 {r}',
   obsWa: 'WA {n}장',
   modalTitle: '📖 핵심 룰 요약',
   modalEd: '공식 룰북 기반',

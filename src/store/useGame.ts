@@ -42,8 +42,8 @@ export const useGame = create<Store>((set, get) => ({
   selectedHand: [],
   cdkMode: false,
 
-  start: (bots = [false, true]) => {
-    const g = newGame(2, ['나', 'CPU-Bedrock'], bots);
+  start: (bots = [false, true], names: [string, string] = ['You', 'CPU-Bedrock']) => {
+    const g = newGame(2, names, bots);
     set({ g, selectedHand: [], cdkMode: false });
     // bot draft auto after human? handled by UI loop calling botStep
   },
@@ -57,7 +57,7 @@ export const useGame = create<Store>((set, get) => ({
     refillConsole(ng);
     p.discard.push(mk(cardId));
     p.draftPicks++;
-    ng.log.push(`${p.name} 드래프트로 가져옴 ${CARD_MAP[cardId].name}`);
+    ng.log.push({ key: 'draft', vars: { p: p.name, c: `card:${cardId}` } });
     sfx.deal();
     // advance draft turn
     if (p.draftPicks >= 2) {
@@ -74,7 +74,7 @@ export const useGame = create<Store>((set, get) => ({
     const need = ng.players.findIndex((pl) => pl.draftPicks < 2);
     if (need === -1) {
       ng.phase = 'PLAY'; ng.current = 0;
-      ng.log.push('드래프트 완료 — 1턴 시작!');
+      ng.log.push({ key: 'draftDone' });
     } else {
       ng.current = need;
     }
@@ -154,7 +154,7 @@ export const useGame = create<Store>((set, get) => ({
     p.retired.push(c);
     p.retiredThisTurn = true;
     (p as any)._retireDone = true;
-    ng.log.push(`${p.name} 온프렘 폐기 ♻ (이번 턴 도입 ≥1 필수)`);
+    ng.log.push({ key: 'retire', vars: { p: p.name } });
     sfx.retire();
     set({ g: ng });
   },
@@ -178,7 +178,7 @@ export const useGame = create<Store>((set, get) => ({
     (p as any)._spent = ((p as any)._spent ?? 0) + def.cost;
     (p as any)._adoptUsed = ((p as any)._adoptUsed ?? 0) + 1;
     p.adoptsLeft--;
-    ng.log.push(`${p.name} 도입 ${def.name}`);
+    ng.log.push({ key: 'adoptFree', vars: { p: p.name, c: `card:${cardId}` } });
     sfx.adopt();
     set({ g: ng });
   },
@@ -196,7 +196,7 @@ export const useGame = create<Store>((set, get) => ({
     (p as any)._spent = ((p as any)._spent ?? 0) + def.cost;
     (p as any)._adoptUsed = ((p as any)._adoptUsed ?? 0) + 1;
     p.adoptsLeft--;
-    ng.log.push(`${p.name} 유료 도입 ${def.name}`);
+    ng.log.push({ key: 'adoptPaid', vars: { p: p.name, c: `card:${pile.cardId}` } });
     sfx.adopt();
     set({ g: ng });
   },
@@ -215,7 +215,7 @@ export const useGame = create<Store>((set, get) => ({
     (p as any)._spent = ((p as any)._spent ?? 0) + cost;
     (p as any)._adoptUsed = ((p as any)._adoptUsed ?? 0) + 1;
     p.adoptsLeft--;
-    ng.log.push(`${p.name} 획득 ${top === 'WA_1VP' ? '1VP' : '3VP'} 웰-아키텍티드!`);
+    ng.log.push({ key: 'adoptWA', vars: { p: p.name, v: top === 'WA_1VP' ? '1VP' : '3VP' } });
     sfx.win();
     if (checkGameOver(ng)) { set({ g: ng }); return; }
     set({ g: ng });
@@ -229,7 +229,7 @@ export const useGame = create<Store>((set, get) => ({
     p.discard.push(mk(cid));
     (p as any)._adoptUsed = ((p as any)._adoptUsed ?? 0) + 1;
     p.adoptsLeft--;
-    ng.log.push(`${p.name} 블라인드로 뽑음 ${CARD_MAP[cid].name}`);
+    ng.log.push({ key: 'blind', vars: { p: p.name, c: `card:${cid}` } });
     sfx.deal();
     set({ g: ng });
   },
@@ -252,7 +252,7 @@ export const useGame = create<Store>((set, get) => ({
     const p = ng.players[ng.current];
     // Official: if you retired, you MUST adopt at least one card this turn
     if (p.retiredThisTurn && ((p as any)._adoptUsed ?? 0) === 0) {
-      ng.log.push(`⚠️ ${p.name}: 폐기했으면 이번 턴에 최소 1장 도입 필수!`);
+      ng.log.push({ key: 'blocked', vars: { p: p.name } });
       set({ g: ng });
       return;
     }
@@ -266,7 +266,7 @@ export const useGame = create<Store>((set, get) => ({
     delete (p as any)._spent; delete (p as any)._drawn; delete (p as any)._adoptUsed; delete (p as any)._recovered; delete (p as any)._retireDone;
     p.retiredThisTurn = false;
     drawCards(ng, ng.current, 5);
-    ng.log.push(`${p.name} 턴 종료 (덱 ${p.resourceDeck.length} / 버린 더미 ${p.discard.length})`);
+    ng.log.push({ key: 'end', vars: { p: p.name, d: p.resourceDeck.length, x: p.discard.length } });
     // next player
     ng.current = (ng.current + 1) % ng.players.length;
     if (ng.current === 0) ng.turnNumber++;
@@ -292,7 +292,7 @@ export const useGame = create<Store>((set, get) => ({
         if (i >= 0) {
           me.retired.push(...me.hand.splice(i, 1));
           me.retiredThisTurn = true;
-          ng.log.push(`${me.name} 온프렘 폐기 ♻`);
+          ng.log.push({ key: 'retire', vars: { p: me.name } });
         }
       }
       (me as any)._retireDone = true;
@@ -322,7 +322,7 @@ export const useGame = create<Store>((set, get) => ({
       if (choice.kind === 'wa' && top && me.credits >= waCost) {
         ng.waStack.shift(); me.discard.push(mk(top)); me.credits -= waCost;
         (me as any)._adoptUsed = ((me as any)._adoptUsed ?? 0) + 1; me.adoptsLeft--;
-        ng.log.push(`${me.name} 획득 ${top} 👑`);
+        ng.log.push({ key: 'adoptWA', vars: { p: me.name, v: top === 'WA_1VP' ? '1VP' : '3VP' } });
       } else if (choice.kind === 'free' && choice.cardId) {
         const pile = ng.consoleFree.find((x) => x.cardId === choice.cardId);
         const def = CARD_MAP[choice.cardId];
@@ -331,7 +331,7 @@ export const useGame = create<Store>((set, get) => ({
         refillConsole(ng);
         me.discard.push(mk(choice.cardId)); me.credits -= def.cost;
         (me as any)._adoptUsed = ((me as any)._adoptUsed ?? 0) + 1; me.adoptsLeft--;
-        ng.log.push(`${me.name} 도입 ${def.name}`);
+        ng.log.push({ key: 'adoptFree', vars: { p: me.name, c: `card:${choice.cardId}` } });
       } else if (choice.kind === 'cost' && ng.consoleCost) {
         const def = CARD_MAP[ng.consoleCost.cardId];
         if (me.credits < def.cost) break;
@@ -360,7 +360,7 @@ export const useGame = create<Store>((set, get) => ({
     const np = ng.players[ng.current];
     const nb = calcBoard(np.played);
     np.credits = nb.credits; np.adoptsLeft = nb.adopts;
-    ng.log.push(`${me.name} 턴 종료`);
+    ng.log.push({ key: 'end', vars: { p: me.name, d: me.resourceDeck.length, x: me.discard.length } });
     set({ g: ng });
   },
 }));

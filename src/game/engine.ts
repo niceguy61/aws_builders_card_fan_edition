@@ -1,5 +1,6 @@
 // Pure rules engine — offline identical, serializable for future PVP (WebSocket-ready)
 import { CARD_MAP, ONPREM_STARTER, COST_QUANTITY, FREE_CARD_IDS, isAWS, isOnPrem } from './cards';
+import type { LogEntry } from '../i18n';
 
 export interface CardInstance { uid: string; cardId: string; tone?: string; }
 export interface ConsolePile { cardId: string; count: number; }
@@ -12,7 +13,7 @@ export interface PlayerState {
   credits: number; adoptsLeft: number; retiredThisTurn: boolean;
   draftPicks: number;
 }
-export interface ComboEvent { text: string; credits?: number; draws?: number; adopts?: number; }
+export interface ComboEvent { text: string; en?: string; credits?: number; draws?: number; adopts?: number; }
 export interface BoardCalc {
   credits: number; adopts: number; draws: number;
   wa1Cost: number; wa3Cost: number;
@@ -27,7 +28,7 @@ export interface GameState {
   players: PlayerState[];
   current: number; phase: Phase; turnNumber: number;
   gameOver: boolean; winnerId: string | null;
-  log: string[];
+  log: LogEntry[];
   lastEvents: ComboEvent[];
 }
 
@@ -75,7 +76,7 @@ export function newGame(playerCount = 2, names = ['You', 'BOT'], bots = [false, 
   const s: GameState = {
     playerCount, freeDeck, costDeck, consoleFree, consoleCost,
     waStack: waSetup(playerCount), players, current: 0, phase: 'DRAFT',
-    turnNumber: 1, gameOver: false, winnerId: null, log: [`게임 시작 — ${playerCount}인, WA ${waSetup(playerCount).length}장`], lastEvents: [],
+    turnNumber: 1, gameOver: false, winnerId: null, log: [{ key: 'gameStart', vars: { n: playerCount, w: waSetup(playerCount).length } }], lastEvents: [],
   };
   return s;
 }
@@ -122,8 +123,8 @@ export function calcBoard(played: CardInstance[]): BoardCalc {
   // EC2 stacking
   const ec2n = countById(played, 'AMAZON_EC2');
   if (ec2n === 1) credits += 2;
-  else if (ec2n === 2) { credits += 5; events.push({ text: 'EC2 x2 스택 +5⚡', credits: 5 }); }
-  else if (ec2n >= 3) { credits += 10 + (ec2n - 3) * 2; adopts += 1; events.push({ text: `EC2 x${ec2n} 메가 스택 +${10 + (ec2n - 3) * 2}⚡ +도입 1`, credits: 10, adopts: 1 }); }
+  else if (ec2n === 2) { credits += 5; events.push({ text: 'EC2 x2 스택 +5⚡', en: 'EC2 x2 stack +5⚡', credits: 5 }); }
+  else if (ec2n >= 3) { credits += 10 + (ec2n - 3) * 2; adopts += 1; events.push({ text: `EC2 x${ec2n} 메가 스택 +${10 + (ec2n - 3) * 2}⚡ +도입 1`, en: `EC2 x${ec2n} mega stack +${10 + (ec2n - 3) * 2}⚡ +1 adoption`, credits: 10, adopts: 1 }); }
 
   const hasEC2 = ec2n > 0;
   const has = (id: string | string[]) => Array.isArray(id) ? hasAny(played, id) : countById(played, id) > 0;
@@ -150,17 +151,17 @@ export function calcBoard(played: CardInstance[]): BoardCalc {
             let times = 1;
             if (c.cardId === 'AMAZON_SNS' && (combo.targetCardId === 'AMAZON_SQS')) times = countById(played, 'AMAZON_SQS');
             draws += (combo.bonusValue ?? 1) * times * n;
-            events.push({ text: `${def.name} 콤보! 뽑기 +${(combo.bonusValue ?? 1) * times}`, draws: (combo.bonusValue ?? 1) * times });
+            events.push({ text: `${def.name} 콤보! 뽑기 +${(combo.bonusValue ?? 1) * times}`, en: `${def.name} combo! +${(combo.bonusValue ?? 1) * times} draw`, draws: (combo.bonusValue ?? 1) * times });
           } else if (!combo.targetCardId && !combo.targetCategory) {
             draws += combo.bonusValue ?? 1; // CloudFormation unconditional
-            events.push({ text: `${def.name} 뽑기 +${combo.bonusValue}`, draws: combo.bonusValue });
+            events.push({ text: `${def.name} 뽑기 +${combo.bonusValue}`, en: `${def.name} +${combo.bonusValue} draw`, draws: combo.bonusValue });
           }
           break;
         }
         case 'CREDIT': {
-          if (combo.targetCardId && has(combo.targetCardId as any)) { credits += combo.bonusValue ?? 0; events.push({ text: `${def.name} +${combo.bonusValue}⚡`, credits: combo.bonusValue }); }
-          else if (combo.targetCategory && ncat(combo.targetCategory) > 0) { credits += combo.bonusValue ?? 0; events.push({ text: `${def.name} +${combo.bonusValue}⚡`, credits: combo.bonusValue }); }
-          else if (combo.targetAnyOtherService && anyAWSother(c.cardId)) { credits += combo.bonusValue ?? 0; events.push({ text: `${def.name} +${combo.bonusValue}⚡`, credits: combo.bonusValue }); }
+          if (combo.targetCardId && has(combo.targetCardId as any)) { credits += combo.bonusValue ?? 0; events.push({ text: `${def.name} +${combo.bonusValue}⚡`, en: `${def.name} +${combo.bonusValue}⚡`, credits: combo.bonusValue }); }
+          else if (combo.targetCategory && ncat(combo.targetCategory) > 0) { credits += combo.bonusValue ?? 0; events.push({ text: `${def.name} +${combo.bonusValue}⚡`, en: `${def.name} +${combo.bonusValue}⚡`, credits: combo.bonusValue }); }
+          else if (combo.targetAnyOtherService && anyAWSother(c.cardId)) { credits += combo.bonusValue ?? 0; events.push({ text: `${def.name} +${combo.bonusValue}⚡`, en: `${def.name} +${combo.bonusValue}⚡`, credits: combo.bonusValue }); }
           break;
         }
         case 'CLOUD_ADOPT': {
@@ -175,7 +176,7 @@ export function calcBoard(played: CardInstance[]): BoardCalc {
               ok = true;
             }
           }
-          if (ok) { adopts += combo.bonusValue ?? 1; events.push({ text: `${def.name} 도입 +${combo.bonusValue ?? 1}`, adopts: combo.bonusValue ?? 1 }); }
+          if (ok) { adopts += combo.bonusValue ?? 1; events.push({ text: `${def.name} 도입 +${combo.bonusValue ?? 1}`, en: `${def.name} +${combo.bonusValue ?? 1} adoption`, adopts: combo.bonusValue ?? 1 }); }
           break;
         }
         case 'CREDIT_PER_COMBINATION': {
@@ -183,12 +184,12 @@ export function calcBoard(played: CardInstance[]): BoardCalc {
             const t = countById(played, combo.targetCardId as string);
             // StepFunctions per Lambda, Dynamo per compute handled below
             credits += (combo.bonusValue ?? 1) * t;
-            if (t > 0) events.push({ text: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, credits: (combo.bonusValue ?? 1) * t });
+            if (t > 0) events.push({ text: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, en: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, credits: (combo.bonusValue ?? 1) * t });
           } else if (combo.targetCategory) {
             const t = ncat(combo.targetCategory);
             // exclude self-count? Dynamo is database so fine; APIGW is networking so fine; Kinesis analytics fine; StepFunctions uses cardId branch
             credits += (combo.bonusValue ?? 1) * t;
-            if (t > 0) events.push({ text: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, credits: (combo.bonusValue ?? 1) * t });
+            if (t > 0) events.push({ text: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, en: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, credits: (combo.bonusValue ?? 1) * t });
           }
           break;
         }
@@ -198,30 +199,30 @@ export function calcBoard(played: CardInstance[]): BoardCalc {
             ? played.length - 1
             : ncat(['compute', 'containers']);
           credits += (combo.bonusValue ?? 1) * t;
-          if (t > 0) events.push({ text: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, credits: (combo.bonusValue ?? 1) * t });
+          if (t > 0) events.push({ text: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, en: `${def.name} +${(combo.bonusValue ?? 1) * t}⚡`, credits: (combo.bonusValue ?? 1) * t });
           break;
         }
         case 'CREDIT_AND_ADOPT': {
           if (combo.targetCardId && has(combo.targetCardId as any)) {
             credits += combo.creditValue ?? 0; adopts += combo.adoptValue ?? 0;
-            events.push({ text: `${def.name} +${combo.creditValue}⚡ +도입 ${combo.adoptValue}`, credits: combo.creditValue, adopts: combo.adoptValue });
+            events.push({ text: `${def.name} +${combo.creditValue}⚡ +도입 ${combo.adoptValue}`, en: `${def.name} +${combo.creditValue}⚡ +${combo.adoptValue} adoption`, credits: combo.creditValue, adopts: combo.adoptValue });
           }
           break;
         }
         case 'DRAW_AND_ADOPT': {
           if (combo.targetCardId && has(combo.targetCardId as any)) {
             draws += combo.drawValue ?? 0; adopts += combo.adoptValue ?? 0;
-            events.push({ text: `${def.name} 뽑기 +${combo.drawValue}·도입 +${combo.adoptValue}`, draws: combo.drawValue, adopts: combo.adoptValue });
+            events.push({ text: `${def.name} 뽑기 +${combo.drawValue}·도입 +${combo.adoptValue}`, en: `${def.name} +${combo.drawValue} draw · +${combo.adoptValue} adoption`, draws: combo.drawValue, adopts: combo.adoptValue });
           }
           break;
         }
         case 'WA_COST_DISCOUNT': {
-          if (combo.discountRules) { wa1 = combo.discountRules.vp_1_cost_override; wa3 = combo.discountRules.vp_3_cost_override; events.push({ text: `WA 할인! 1VP=2⚡ 3VP=6⚡` }); }
+          if (combo.discountRules) { wa1 = combo.discountRules.vp_1_cost_override; wa3 = combo.discountRules.vp_3_cost_override; events.push({ text: `WA 할인! 1VP=2⚡ 3VP=6⚡`, en: `WA discount! 1VP=2⚡ 3VP=6⚡` }); }
           break;
         }
         case 'RECOVER_TO_DECK_TOP': {
           recoverTop += 1;
-          events.push({ text: `${def.name}: 버린 더미 1장 → 덱 맨 위` });
+          events.push({ text: `${def.name}: 버린 더미 1장 → 덱 맨 위`, en: `${def.name}: 1 discard → deck top` });
           break;
         }
       }
@@ -258,7 +259,7 @@ export function drawCards(s: GameState, pi: number, n: number) {
       if (p.discard.length === 0) break;
       p.resourceDeck = shuffle(p.discard);
       p.discard = [];
-      s.log.push(`${p.name} 버린 더미 셔플 → 덱으로`);
+      s.log.push({ key: 'reshuffle', vars: { p: p.name } });
     }
     const c = p.resourceDeck.pop();
     if (c) p.hand.push(c);
@@ -295,7 +296,7 @@ export function checkGameOver(s: GameState): boolean {
       if (score > best) { best = score; win = p.id; }
     });
     s.winnerId = win;
-    s.log.push(`게임 종료! 승리: ${s.players.find((p) => p.id === win)?.name}`);
+    s.log.push({ key: 'gameOver', vars: { w: s.players.find((p) => p.id === win)?.name ?? '' } });
     return true;
   }
   return false;

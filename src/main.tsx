@@ -17,6 +17,10 @@ function Root() {
   const view = hash === '#observer' ? <Observer /> : hash === '#introduce' ? <Introduce /> : <App />;
   // ?static: 스크린샷용 — 모션 즉시 완료 (WAAPI는 가상시간을 안 따름)
   const statik = window.location.search.includes('static');
+  useEffect(() => {
+    if (statik) document.documentElement.classList.add('static-shot');
+    return () => document.documentElement.classList.remove('static-shot');
+  }, [statik]);
   return (
     <StrictMode>
       {/* P0-6: OS 모션 감소 설정을 framer-motion에 전달 */}

@@ -25,11 +25,11 @@ with **offline-identical rules**, starting with PVE.
 
 ## 📸 Screenshots
 
-| Draft phase | Console market |
+| Draft phase | Game board |
 |---|---|
-| ![Draft phase](docs/screenshots/01-draft.png) | ![Console market](docs/screenshots/02-console.png) |
-| Key-rules modal | Player hand & CPU |
-| ![Key-rules modal](docs/screenshots/03-rules.png) | ![Player hand and CPU zone](docs/screenshots/04-hand.png) |
+| ![Draft phase](docs/screenshots/01-draft.png) | ![Game board](docs/screenshots/02-game.png) |
+| Mat spectator view | Intro page |
+| ![Mat spectator view](docs/screenshots/03-observer.png) | ![Intro page](docs/screenshots/04-introduce.png) |
 
 ## ✨ Features
 

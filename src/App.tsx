@@ -5,10 +5,12 @@ import confetti from 'canvas-confetti';
 import { useGame } from './store/useGame';
 import BuilderCard from './components/BuilderCard';
 import { RulesModal, Tip } from './components/Rulebook';
-import { CARD_MAP } from './game/cards';
+import { CARD_MAP, cardName } from './game/cards';
 import { calcBoard, scorePlayer, canRetire, handCounts } from './game/engine';
 import type { CardInstance } from './game/engine';
 import { botDraftPick } from './game/bot';
+import { useLocale, tr, tLog, logIcon, playerNames } from './i18n';
+import type { StrKey } from './i18n';
 import './App.css';
 
 // 매트식 뒷면/더미 프리뷰
@@ -133,7 +135,7 @@ export default function App() {
   const board = useMemo(() => calcBoard(me?.played ?? []), [me]);
   const humanBoard = useMemo(() => calcBoard(human?.played ?? []), [human]);
 
-  useEffect(() => { start([false, true]); }, [start]);
+  useEffect(() => { const [n0, n1] = playerNames(useLocale.getState().locale); start([false, true], [n0, n1]); }, [start]);
 
   // ?demo=board: 스크린샷용 오토파일럿 (드래프트 픽 + 전체 내기 1회, 이후 정지)
   const demoDone = useRef(false);
@@ -193,86 +195,96 @@ export default function App() {
   const mustAdopt = !!me && !me.isBot && me.retiredThisTurn;
   const bot = g.players.find((p) => p.isBot) ?? g.players[1];
   const topWA = g.waStack[0];
+  const locale = useLocale((s) => s.locale);
+  const toggleLocale = useLocale((s) => s.toggle);
+  const t = (k: StrKey, v?: Record<string, string | number>) => tr(locale, k, v);
+  const cardNameOf = (id: string) => { const d = CARD_MAP[id]; return d ? cardName(d, locale) : id; };
   // P0-1: 턴 스테퍼 상태 (폐기→건축→도입→정리)
   const adoptUsed = (me as any)?._adoptUsed ?? 0;
   const stepStates = g.phase === 'PLAY' && !g.gameOver ? [
     {
-      label: '폐기',
+      label: t('step0'),
       state: (me?.retiredThisTurn || (me as any)?._retireDone || (me?.played.length ?? 0) > 0)
         ? 'done' : (me && canRetire(me) ? 'active' : 'todo'),
-      tip: '턴 시작·시작핸드 한정. 빌더 > 온프렘이면 핸드에서 1장 제거',
+      tip: t('stepTip0'),
     },
     {
-      label: '건축',
+      label: t('step1'),
       state: (me?.played.length ?? 0) > 0 ? 'done' : (!me || canRetire(me) ? 'todo' : 'active'),
-      tip: '핸드에서 카드를 내어 아키텍처 구성·콤보 발동',
+      tip: t('stepTip1'),
     },
     {
-      label: '도입',
+      label: t('step2'),
       state: adoptUsed > 0 ? 'done' : ((me?.played.length ?? 0) > 0 ? 'active' : 'todo'),
-      tip: '턴당 1회. ⚡를 내고 콘솔·WA·블라인드에서 가져옴',
+      tip: t('stepTip2'),
     },
     {
-      label: '정리',
+      label: t('step3'),
       state: (me?.adoptsLeft ?? 1) <= 0 ? 'active' : 'todo',
-      tip: '낸 카드 + 남은 핸드를 버리고 5장 뽑기',
+      tip: t('stepTip3'),
     },
   ] : [];
   // 비활성 회색 처리 대신 사유 표시: null이면 구매 가능
   const lockReason = (cost: number): string | null => {
-    if (g.phase !== 'PLAY' || g.gameOver) return '게임 준비 중에는 구매할 수 없습니다.';
-    if (me?.isBot) return '봇 턴에는 구매할 수 없습니다.';
-    if ((me?.adoptsLeft ?? 0) <= 0) return '도입 횟수를 다 썼습니다 (콤보로 추가 가능).';
-    if ((me?.credits ?? 0) < cost) return `크레딧 부족 — 보유 ${me?.credits ?? 0}⚡ / 필요 ${cost}⚡.`;
+    if (g.phase !== 'PLAY' || g.gameOver) return t('lockPrep');
+    if (me?.isBot) return t('lockBot');
+    if ((me?.adoptsLeft ?? 0) <= 0) return t('lockAdopts');
+    if ((me?.credits ?? 0) < cost) return t('lockCredits', { have: me?.credits ?? 0, need: cost });
     return null;
   };
+  const restart = () => { const [n0, n1] = playerNames(locale); start([false, true], [n0, n1]); };
 
   return (
     <div className="table">
       <header className="hud">
-        <div className="brand">☁️ <b>AWS 빌더카드</b> <span className="ed">2판 · PVE</span></div>
+        <div className="brand">☁️ <b>AWS {locale === 'ko' ? '빌더카드' : 'BuilderCards'}</b> <span className="ed">{locale === 'ko' ? '2판 · PVE' : '2nd Ed · PVE'}</span></div>
         <div className="hud-stats">
-          <span className="pill">{g.turnNumber}턴 · <span className="tone-dot" style={{ background: me?.tone }} />{me?.name} {me?.isBot ? '🤖' : ''}</span>
-          <Tip text="아키텍처의 기본 크레딧 + 콤보 보너스 합계. 카드 도입 때 지불에 사용합니다."><span className="pill gold">⚡ {me?.credits ?? 0}</span></Tip>
-          <Tip text="이번 턴 남은 도입 횟수. 기본 1회, 콤보(EC2 x3·CFM 등)로 추가됩니다."><span className="pill blue">도입 {me?.adoptsLeft ?? 0}</span></Tip>
-          <Tip text="콘솔에 남은 WA 카드 수. 마지막 1장이 팔리면 즉시 게임 종료·VP 합산."><span className="pill vp">🏆 WA {g.waStack.length}</span></Tip>
+          <span className="pill">{locale === 'ko' ? `${g.turnNumber}턴` : `Turn ${g.turnNumber}`} · <span className="tone-dot" style={{ background: me?.tone }} />{me?.name} {me?.isBot ? '🤖' : ''}</span>
+          <Tip text={t('tipCredits')}><span className="pill gold">⚡ {me?.credits ?? 0}</span></Tip>
+          <Tip text={t('tipAdopts')}><span className="pill blue">{locale === 'ko' ? `도입 ${me?.adoptsLeft ?? 0}` : `Adopt ${me?.adoptsLeft ?? 0}`}</span></Tip>
+          <Tip text={t('tipWa')}><span className="pill vp">🏆 WA {g.waStack.length}</span></Tip>
         </div>
         <div className="hud-actions">
-          <button className="btn primary" onClick={() => setShowRules(true)}>📖 핵심 룰</button>
-          <button className="btn ghost" onClick={() => { window.location.hash = '#introduce'; }}>🏠 소개</button>
-          <button className="btn ghost" onClick={() => { window.location.hash = '#observer'; }}>👁 관전</button>
-          <button className="btn ghost" onClick={() => setShowHelp((v) => !v)}>{showHelp ? '가이드 숨기기' : '가이드 보기'}</button>
-          <button className="btn ghost" onClick={() => start([false, true])}>다시 시작</button>
+          <button className="btn primary" onClick={() => setShowRules(true)}>{t('nav_rules')}</button>
+          <button className="btn ghost" onClick={() => { window.location.hash = '#introduce'; }}>{t('nav_intro')}</button>
+          <button className="btn ghost" onClick={() => { window.location.hash = '#observer'; }}>{t('nav_observer')}</button>
+          <button className="btn ghost" onClick={toggleLocale}>{t('nav_locale')}</button>
+          <button className="btn ghost" onClick={() => setShowHelp((v) => !v)}>{showHelp ? t('nav_guide_hide') : t('nav_guide_show')}</button>
+          <button className="btn ghost" onClick={restart}>{t('nav_restart')}</button>
         </div>
       </header>
 
       {showHelp && (
         <div className="guide">
-          <b>공식 룰 (rules_2024 PDF · 퀵레퍼런스 A5):</b> ① <b>폐기 (턴 시작·시작핸드 5장 한정)</b> — 핸드에 빌더(AWS)가 온프렘보다 많으면(3vs2·4vs1) 핸드에서 온프렘 1장 영구 제거, 제거했으면 이번 턴 도입 ≥1 필수 → ② 건축 (아키텍처·⚡콤보) → ③ 도입 (턴당 1장) → ④ 정리 (5장 뽑기). <b>EC2 x2=5⚡, x3=10⚡+1도입</b> · 마지막 WA 즉시 종료.
+          {locale === 'ko' ? (
+            <><b>공식 룰 (rules_2024 PDF · 퀵레퍼런스 A5):</b> ① <b>폐기 (턴 시작·시작핸드 5장 한정)</b> — 핸드에 빌더(AWS)가 온프렘보다 많으면(3vs2·4vs1) 핸드에서 온프렘 1장 영구 제거, 제거했으면 이번 턴 도입 ≥1 필수 → ② 건축 (아키텍처·⚡콤보) → ③ 도입 (턴당 1장) → ④ 정리 (5장 뽑기). <b>EC2 x2=5⚡, x3=10⚡+1도입</b> · 마지막 WA 즉시 종료.</>
+          ) : (
+            <><b>Official rules (rules_2024 PDF · Quick Reference A5):</b> ① <b>Retire (turn start, starting 5-card hand only)</b> — hand Builder (AWS) more than On-Prem (3vs2, 4vs1) → exile 1 On-Prem from hand, then adopt ≥1 this turn → ② Build (architectures · ⚡combos) → ③ Adopt (1/turn) → ④ Cleanup (draw 5). <b>EC2 x2=5⚡, x3=10⚡+1 adoption</b> · ends on last WA.</>
+          )}
         </div>
       )}
 
       {g.phase === 'DRAFT' && (
         <div className="overlay">
           <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="panel">
-            <h2>☁️ 클라우드 도입 페이즈 — 무료 2장 선택</h2>
-            <p>{me?.name} {me?.isBot ? '(봇 생각 중…)' : '무료 AWS 카드 2장을 골라 버린 더미로'} · 선택 {me?.draftPicks}/2</p>
+            <h2>{t('draftTitle')}</h2>
+            <p>{me?.name} {me?.isBot ? t('draftBot') : t('draftHuman')} · {me?.draftPicks}/2 {t('draftPicked')}</p>
             {!me?.isBot && (
               <div className="market">
                 {g.consoleFree.map((p) => (
                   <button key={p.cardId} className="market-pile" onClick={() => draftPick(p.cardId)}>
                     <BuilderCard small card={{ uid: p.cardId, cardId: p.cardId }} />
-                    <span className="count">x{p.count} · 무료</span>
+                    <span className="count">x{p.count} · {t('free')}</span>
                   </button>
                 ))}
               </div>
             )}
             {me?.isBot && (
               <>
-                <div className="thinking">🤖 드래프트 중…</div>
+                <div className="thinking">{t('drafting')}</div>
                 <div className="controls bot-controls">
-                  <button className="btn ghost" onClick={() => setBotPaused((v) => !v)}>{botPaused ? '▶ 계속하기' : '⏸ 일시정지'}</button>
-                  <button className={`btn ghost${botFast ? ' toggled' : ''}`} onClick={() => setBotFast((v) => !v)}>⏩ 빨리넘기기 {botFast ? 'ON' : 'OFF'}</button>
+                  <button className="btn ghost" onClick={() => setBotPaused((v) => !v)}>{botPaused ? t('resume') : t('pause')}</button>
+                  <button className={`btn ghost${botFast ? ' toggled' : ''}`} onClick={() => setBotFast((v) => !v)}>{botFast ? t('fastOn') : t('fastOff')}</button>
                 </div>
               </>
             )}
@@ -282,38 +294,39 @@ export default function App() {
 
       {/* Console market — 매트식: 덱 → 슬롯 즉시 리필 */}
       <section className={`console ${mustAdopt && adoptUsed === 0 ? 'need-adopt' : ''}`}>
-        <div className="console-title">🖥️ AWS 콘솔 <span>— 공식 동일: 무료 4 + 유료 1 (+ 확장팩용 1슬롯 비움)</span></div>
+        <div className="console-title">🖥️ AWS {locale === 'ko' ? '콘솔' : 'Console'} <span>{t('consoleSub')}</span></div>
         <div className="decks">
-          <Tip text="무료 덱(뒷면). 슬롯에서 사면 여기서 즉시 리필됩니다. 클릭하면 블라인드로 1장 가져옵니다(도입 1회 소모).">
+          <Tip text={t('tipBlind')}>
           <button
             className={`market-pile ${!lockReason(0) && g.freeDeck.length > 0 ? 'afford' : 'locked'}`}
             onClick={buyBlind}>
-            <SlotWrap reason={g.freeDeck.length === 0 ? '무료 덱이 비었습니다.' : lockReason(0)}>
-            <PileBack label={`무료 덱 ${g.freeDeck.length}장`} count={g.freeDeck.length} />
+            <SlotWrap reason={g.freeDeck.length === 0 ? t('lockEmptyFree') : lockReason(0)}>
+            <PileBack label={t('blindDeck', { n: g.freeDeck.length })} count={g.freeDeck.length} />
             </SlotWrap>
-            <span className="deck-cap">🎲 블라인드 (도입 1회)</span>
+            <span className="deck-cap">{t('blindCap')}</span>
           </button>
           </Tip>
-          <Tip text="유료 덱(뒷면). 유료 슬롯에서 사면 여기서 즉시 리필됩니다."><div><PileBack label={`유료 덱 ${g.costDeck.length}장`} count={g.costDeck.length} /></div></Tip>
-          <Tip text="WA는 맨 위부터 순서대로(1VP 먼저). Well-Architected Tool을 냈으면 할인 가격이 표시됩니다.">
+          <Tip text={t('tipPaidDeck')}>
+          <div><PileBack label={t('paidDeck', { n: g.costDeck.length })} count={g.costDeck.length} /></div>
+          </Tip>
+          <Tip text={t('tipWaDeck')}>
           <button
             className={`market-pile ${!lockReason(topWA === 'WA_1VP' ? board.wa1Cost : board.wa3Cost) ? 'afford' : 'locked'}`}
             onClick={buyWA}>
-            <SlotWrap reason={!topWA ? 'WA 더미가 비었습니다.' : lockReason(topWA === 'WA_1VP' ? board.wa1Cost : board.wa3Cost)}>
+            <SlotWrap reason={!topWA ? t('lockWaEmpty') : lockReason(topWA === 'WA_1VP' ? board.wa1Cost : board.wa3Cost)}>
             <div className="deck-box">
               {topWA
                 ? <Zoomable card={{ uid: 'wa-deck', cardId: topWA }} onZoom={setZoom}><MiniCard card={{ uid: 'wa-deck', cardId: topWA }} /></Zoomable>
-                : <div className="pile-empty">WA 매진</div>}
-              <div className="pile-label">WA 더미 {g.waStack.length}장</div>
+                : <div className="pile-empty">{t('waSoldOut')}</div>}
+              <div className="pile-label">{t('waPile', { n: g.waStack.length })}</div>
             </div>
             </SlotWrap>
-            <span className="deck-cap">{topWA ? `비용 ${topWA === 'WA_1VP' ? board.wa1Cost : board.wa3Cost}⚡ (기본 ${topWA === 'WA_1VP' ? 4 : 8})` : '매진'}</span>
+            <span className="deck-cap">{topWA ? t('waCost', { c: topWA === 'WA_1VP' ? board.wa1Cost : board.wa3Cost, b: topWA === 'WA_1VP' ? 4 : 8 }) : t('waSoldOut')}</span>
           </button>
           </Tip>
         </div>
-        <div className="refill-line">▼ 구매 즉시 리필됨 ▼</div>
+        <div className="refill-line">{t('refillLine')}</div>
         <div className="market">
-          <AnimatePresence>
             {g.consoleFree.map((p) => {
               const def = CARD_MAP[p.cardId];
               const reason = lockReason(def.cost);
@@ -324,12 +337,11 @@ export default function App() {
                   <Zoomable card={{ uid: p.cardId, cardId: p.cardId }} onZoom={setZoom}>
                   <BuilderCard small card={{ uid: p.cardId, cardId: p.cardId }} />
                   </Zoomable>
-                  <span className="count">x{p.count} · {def.cost === 0 ? '무료' : `$${def.cost}⚡`}</span>
+                  <span className="count">x{p.count} · {def.cost === 0 ? t('free') : t('paidFmt', { c: def.cost })}</span>
                 </motion.button>
                 </SlotWrap>
               );
             })}
-          </AnimatePresence>
           {g.consoleCost && (() => {
             const costDef = CARD_MAP[g.consoleCost.cardId];
             const costReason = lockReason(costDef.cost);
@@ -339,15 +351,15 @@ export default function App() {
                 <Zoomable card={{ uid: 'cost', cardId: g.consoleCost.cardId }} onZoom={setZoom}>
                 <BuilderCard small card={{ uid: 'cost', cardId: g.consoleCost.cardId }} />
                 </Zoomable>
-                <span className="count">유료 ${costDef.cost}⚡</span>
+                <span className="count">{t('paidFmt', { c: costDef.cost })}</span>
               </button>
               </SlotWrap>
             );
           })()}
-          <Tip text="매트 공식: 기본 룰에서는 비워두는 슬롯. add-on·확장팩을 쓸 때만 사용합니다.">
+          <Tip text={t('tipExp')}>
           <div className="slot-empty" aria-disabled="true">
-            <div>확장팩용 슬롯</div>
-            <div className="slot-sub">기본 룰에서 비움</div>
+            <div>{t('expSlot')}</div>
+            <div className="slot-sub">{t('expSub')}</div>
           </div>
           </Tip>
         </div>
@@ -357,14 +369,14 @@ export default function App() {
       <AnimatePresence>
         {g.lastEvents?.length > 0 && (
           <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="combo-feed">
-            {g.lastEvents.map((e, i) => <span key={i} className="combo-chip">✦ {e.text}</span>)}
+            {g.lastEvents.map((e, i) => <span key={i} className="combo-chip">✦ {locale === 'ko' ? e.text : (e.en ?? e.text)}</span>)}
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* P0-1: 턴 스테퍼 */}
       {stepStates.length > 0 && (
-        <div className="stepper" role="list" aria-label="턴 단계">
+        <div className="stepper" role="list" aria-label={locale === 'ko' ? '턴 단계' : 'Turn phases'}>
           {stepStates.map((s, i) => (
             <Fragment key={s.label}>
               {i > 0 && <span className="step-arrow">→</span>}
@@ -378,8 +390,8 @@ export default function App() {
 
       {/* Architecture area — 매트 중앙 */}
       <section className="zone arch">
-        <div className="zone-title">🏗️ {me?.name} 아키텍처 <span className="ed">Architecture Building Area</span> — <b>{board.credits}⚡</b> · 도입 {board.adopts} · 뽑기 {board.draws}
-          {board.wa1Cost < 4 && <span className="disc"> · WA 할인 적용!</span>}
+        <div className="zone-title">{t('archOf', { name: me?.name ?? '' })} <span className="ed">Architecture Building Area</span> — <b>{board.credits}⚡</b> · {t('adoptsU')} {board.adopts} · {t('drawsU')} {board.draws}
+          {board.wa1Cost < 4 && <span className="disc">{t('waDisc')}</span>}
         </div>
         <div className="cards">
           <AnimatePresence>
@@ -389,7 +401,7 @@ export default function App() {
               </Zoomable>
             ))}
           </AnimatePresence>
-          {(me?.played ?? []).length === 0 && <div className="empty arch-empty">폐기(해당 시) → 핸드에서 카드를 내어 아키텍처 구성 ⬇ (또는 전체 내기로 콤보 극대화)</div>}
+          {(me?.played ?? []).length === 0 && <div className="empty arch-empty">{t('archEmpty')}</div>}
         </div>
       </section>
 
@@ -398,7 +410,7 @@ export default function App() {
       {/* Human hand */}
       {!me?.isBot && g.phase === 'PLAY' && !g.gameOver && (
         <section className="zone hand pzone">
-          <div className="zone-title">🃏 내 핸드 ({human.hand.length}) · 빌더 {human.hand.filter((c) => CARD_MAP[c.cardId]?.frameType === 'AWS_SERVICE').length} vs 온프렘 {human.hand.filter((c) => CARD_MAP[c.cardId]?.frameType === 'ON_PREM').length}</div>
+          <div className="zone-title">{t('handOf', { n: human.hand.length })} · {t('bvb', { a: human.hand.filter((c) => CARD_MAP[c.cardId]?.frameType === 'AWS_SERVICE').length, b: human.hand.filter((c) => CARD_MAP[c.cardId]?.frameType === 'ON_PREM').length })}</div>
           <div className="cards fan">
             {human.hand.map((c) => (
               <Zoomable key={c.uid} card={c} onZoom={setZoom}>
@@ -411,78 +423,71 @@ export default function App() {
               </Zoomable>
             ))}
           </div>
-          <div className="hint">실시간 계산: 기본 + EC2 스택 + {humanBoard.events.length}개 콤보 = <b>{human.credits}⚡ 사용 가능</b> · 남은 도입 {human.adoptsLeft}</div>
+          <div className="hint">{t('calcPre')}{humanBoard.events.length}{t('calcMid')}<b>{human.credits}{t('calcUse')}</b>{t('calcLeft')}{human.adoptsLeft}</div>
           <div className="piles">
-            <PileBack label={`자원 덱 ${human.resourceDeck.length}장`} count={human.resourceDeck.length} />
+            <PileBack label={t('resDeck', { n: human.resourceDeck.length })} count={human.resourceDeck.length} />
             <div className="deck-box">
               {human.discard.length
                 ? <Zoomable card={human.discard[human.discard.length - 1]} onZoom={setZoom}><MiniCard card={human.discard[human.discard.length - 1]} /></Zoomable>
-                : <div className="pile-empty">비었음</div>}
-              <div className="pile-label">버린 더미 {human.discard.length}장</div>
+                : <div className="pile-empty">{t('pileEmpty')}</div>}
+              <div className="pile-label">{t('disPile', { n: human.discard.length })}</div>
             </div>
             <div className="deck-box">
-              <div className="pile-empty">♻ {human.retired.length}장</div>
-              <div className="pile-label">제거됨</div>
+              <div className="pile-empty">{t('retiredCount', { n: human.retired.length })}</div>
+              <div className="pile-label">{t('retiredPile')}</div>
             </div>
           </div>
         </section>
       )}
         <section className="zone pzone">
-          <div className="zone-title"><span className="tone-dot" style={{ background: bot?.tone }} />🤖 {bot?.name} · 핸드 {bot?.hand.length}장</div>
+          <div className="zone-title"><span className="tone-dot" style={{ background: bot?.tone }} />{t('botHand', { name: bot?.name ?? '', n: bot?.hand.length ?? 0 })}</div>
           {me?.isBot && g.phase === 'PLAY' && !g.gameOver && (
             <>
-              <div className="thinking">🤖 {me.name} 아키텍처 구성 중…</div>
+              <div className="thinking">{t('botThinking', { name: me.name })}</div>
               {!botPaused && <div className="bot-progress" aria-hidden="true"><div className="bar" /></div>}
               <div className="controls bot-controls">
-                <button className="btn ghost" onClick={() => setBotPaused((v) => !v)}>{botPaused ? '▶ 계속하기' : '⏸ 일시정지'}</button>
-                <button className={`btn ghost${botFast ? ' toggled' : ''}`} onClick={() => setBotFast((v) => !v)}>⏩ 빨리넘기기 {botFast ? 'ON' : 'OFF'}</button>
-                <button className="btn ghost" onClick={() => botStep()}>⏭ 지금 넘기기</button>
+                <button className="btn ghost" onClick={() => setBotPaused((v) => !v)}>{botPaused ? t('resume') : t('pause')}</button>
+                <button className={`btn ghost${botFast ? ' toggled' : ''}`} onClick={() => setBotFast((v) => !v)}>{botFast ? t('fastOn') : t('fastOff')}</button>
+                <button className="btn ghost" onClick={() => botStep()}>{t('stepNow')}</button>
               </div>
             </>
           )}
           <MiniBackRow n={bot?.hand.length ?? 0} />
           <div className="piles">
-            <PileBack label={`자원 덱 ${bot?.resourceDeck.length ?? 0}장`} count={bot?.resourceDeck.length ?? 0} />
+            <PileBack label={t('resDeck', { n: bot?.resourceDeck.length ?? 0 })} count={bot?.resourceDeck.length ?? 0} />
             <div className="deck-box">
               {(bot?.discard.length ?? 0) > 0
                 ? <Zoomable card={bot!.discard[bot!.discard.length - 1]} onZoom={setZoom}><MiniCard card={bot!.discard[bot!.discard.length - 1]} /></Zoomable>
-                : <div className="pile-empty">비었음</div>}
-              <div className="pile-label">버린 더미 {bot?.discard.length ?? 0}장</div>
+                : <div className="pile-empty">{t('pileEmpty')}</div>}
+              <div className="pile-label">{t('disPile', { n: bot?.discard.length ?? 0 })}</div>
             </div>
             <div className="deck-box">
-              <div className="pile-empty">♻ {bot?.retired.length ?? 0}장</div>
-              <div className="pile-label">제거됨</div>
+              <div className="pile-empty">{t('retiredCount', { n: bot?.retired.length ?? 0 })}</div>
+              <div className="pile-label">{t('retiredPile')}</div>
             </div>
           </div>
-          <div className="hint">보유 VP 약 {scorePlayer(bot ?? g.players[0]).vp} · AWS {scorePlayer(bot ?? g.players[0]).awsCount}장</div>
+          <div className="hint">{t('vpAbout', { v: scorePlayer(bot ?? g.players[0]).vp, a: scorePlayer(bot ?? g.players[0]).awsCount })}</div>
         </section>
       </div>
 
       {/* P0-1: 하단 고정 액션바 */}
       {!me?.isBot && g.phase === 'PLAY' && !g.gameOver && (
         <div className="actionbar">
-          <Tip text="핸드를 전부 내어 콤보를 극대화합니다. 이후에는 폐기할 수 없으니, 폐기 조건이면 먼저 폐기하세요."><button className="btn primary" onClick={playAll}>▶ 전체 내기 (콤보!)</button></Tip>
-          {retireOk && !retireMode && <Tip text="공식 룰: 턴 시작·시작핸드 5장 한정. 핸드 빌더 > 온프렘이면 핸드에서 온프렘 1장 영구 제거. 제거 시 이번 턴 도입 ≥1 필수."><button className="btn warn" onClick={() => setRetireMode(true)}>♻ 온프렘 폐기 (핸드 빌더 {hc.builder} &gt; 온프렘 {hc.onprem} — 핸드에서 1장)</button></Tip>}
-          {retireMode && <span className="pill">핸드에서 온프렘 1장 클릭 (시작핸드 한정·공개 확인)</span>}
-          {retireMode && <button className="btn ghost" onClick={() => { setRetireMode(false); skipRetire(); }}>폐기 건너뛰기</button>}
+          <Tip text={t('tipPlayAll')}><button className="btn primary" onClick={playAll}>{t('playAll')}</button></Tip>
+          {retireOk && !retireMode && <Tip text={t('tipRetire')}><button className="btn warn" onClick={() => setRetireMode(true)}>{t('retireBtn', { a: hc.builder, b: hc.onprem })}</button></Tip>}
+          {retireMode && <span className="pill">{t('retirePick')}</span>}
+          {retireMode && <button className="btn ghost" onClick={() => { setRetireMode(false); skipRetire(); }}>{t('skipRetire')}</button>}
           {mustAdopt && adoptUsed === 0
-            ? <Tip text="폐기했으니 도입을 최소 1회 해야 턴을 종료할 수 있습니다. 콘솔에서 카드를 가져오세요."><button className="btn gold locked" aria-disabled="true" onClick={endTurn}>⏭ 턴 종료 (도입 필요)</button></Tip>
-            : <Tip text="낸 카드 + 남은 핸드를 전부 버린 더미로(CFM은 제거), 5장을 뽑고 턴을 넘깁니다."><button className="btn gold" onClick={endTurn}>⏭ 턴 종료 → 정리하고 5장 뽑기</button></Tip>}
+            ? <Tip text={t('mustAdopt')}><button className="btn gold locked" aria-disabled="true" onClick={endTurn}>{t('endTurnNeed')}</button></Tip>
+            : <Tip text={t('tipEnd')}><button className="btn gold" onClick={endTurn}>{t('endTurn')}</button></Tip>}
         </div>
       )}
 
       {/* P0-4: 구조화 로그 */}
       <section className="log">
         {[...g.log].slice(-30).reverse().map((l, i) => {
-          const hot = l.includes('획득') || l.includes('WA');
-          const icon = l.includes('획득') ? '🏆'
-            : l.includes('폐기') ? '♻'
-            : l.includes('도입') || l.includes('가져옴') || l.includes('블라인드') ? '📥'
-            : l.includes('턴 종료') ? '⏭'
-            : l.includes('드래프트') ? '☁️'
-            : l.includes('셔플') ? '🔀'
-            : l.includes('⚠️') ? '' : '•';
-          return <div key={i} className={hot ? 'log-hot' : ''}>{icon} {l}</div>;
+          const hot = l.key === 'adoptWA' || l.key === 'gameOver';
+          return <div key={i} className={hot ? 'log-hot' : ''}>{logIcon(l.key)} {tLog(l, locale, cardNameOf)}</div>;
         })}
       </section>
 
@@ -490,7 +495,7 @@ export default function App() {
       {cdkMode && (
         <div className="overlay">
           <div className="panel">
-            <h3>🛠 AWS CDK — 버린 더미 1장 → 덱 맨 위로</h3>
+            <h3>{t('cdkTitle')}</h3>
             <div className="cards">
               {human.discard.map((c) => (
                 <Zoomable key={c.uid} card={c} onZoom={setZoom}>
@@ -507,8 +512,8 @@ export default function App() {
         <div className="overlay" onClick={() => setZoom(null)}>
           <div className="zoom-panel" onClick={(e) => e.stopPropagation()}>
             <BuilderCard card={zoom} />
-            <div className="zoom-cap">{CARD_MAP[zoom.cardId]?.name} · Esc/바깥 클릭으로 닫기</div>
-            <button className="btn ghost" onClick={() => setZoom(null)}>닫기</button>
+            <div className="zoom-cap">{cardNameOf(zoom.cardId)}{t('zoomCap')}</div>
+            <button className="btn ghost" onClick={() => setZoom(null)}>{t('close')}</button>
           </div>
         </div>
       )}
@@ -518,14 +523,14 @@ export default function App() {
       {g.gameOver && (
         <div className="overlay">
           <motion.div initial={{ scale: 0.85, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="panel big">
-            <h1>🏆 게임 종료 — 마지막 WA 획득!</h1>
+            <h1>{t('overTitle')}</h1>
             {g.players.map((p) => {
               const s = scorePlayer(p);
               const win = p.id === g.winnerId;
-              return <div key={p.id} className={`score ${win ? 'win' : ''}`}>{win ? '👑 ' : ''}{p.name} — {s.vp} VP · AWS 카드 {s.awsCount}장 {win && '(승리)'}</div>;
+              return <div key={p.id} className={`score ${win ? 'win' : ''}`}>{win ? '👑 ' : ''}{t('overScore', { name: p.name, v: s.vp, a: s.awsCount, win: win ? t('overWin') : '' })}</div>;
             })}
-            <button className="btn primary" onClick={() => start([false, true])}>↻ 다시 하기 (PVE)</button>
-            <p className="pvpn">PVP 모드: 같은 엔진·같은 액션 스펙으로 WebSocket 서버만 붙이면 즉시 확장 가능 (state JSON 직렬화 완료).</p>
+            <button className="btn primary" onClick={restart}>{t('playAgain')}</button>
+            <p className="pvpn">{t('pvpn')}</p>
           </motion.div>
         </div>
       )}
