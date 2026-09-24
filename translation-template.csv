@@ -1,0 +1,47 @@
+﻿cardId,name_KO,name_EN,desc_KO,desc_EN,combo1_KO,combo1_EN,combo2_KO,combo2_EN
+ONPREM_SAN,SAN,SAN (Storage Area Network),중앙 집중식 스토리지 영역 네트워크.,,,,,
+ONPREM_BARE_METAL,Bare Metal Host,Bare Metal Host,가상화 없이 직접 실행하는 물리 서버.,,,,,
+ONPREM_VM,Virtual Machine,Virtual Machine,"유연한 가상화 컴퓨팅, 워크로드를 클라우드로.",,Bare Metal Host와 함께 뽑기 +1,+1 Card Draw when combined with Bare Metal Host.,,
+ONPREM_DB_SERVER,Database Server,Database Server,온프레미스 데이터베이스 서버.,,,,,
+ONPREM_NETWORKING,Networking,Networking,온프레미스 네트워크 장비.,,,,,
+ONPREM_DOC_STORE,Document Store,Document Store,온프레미스 문서 저장소.,,,,,
+ONPREM_DW,Data Warehouse,Data Warehouse,온프레미스 데이터 웨어하우스.,,,,,
+ONPREM_ID_PROVIDER,Corporate IdP,Corporate Identity Provider,사내 identity 공급자.,,,,,
+WA_1VP,Well-Architected 1VP,AWS Well-Architected (1 VP),게임 종료 시 승점 1점,Provides 1 Victory Point at game end.,,,,
+WA_3VP,Well-Architected 3VP,AWS Well-Architected (3 VP),게임 종료 시 승점 3점,Provides 3 Victory Points at game end.,,,,
+AWS_WELL_ARCHITECTED_TOOL,Well-Architected Tool,AWS Well-Architected Tool,아키텍처를 검토하고 모범 사례를 도입하세요.,Review your architecture and adopt best practices.,"이번 턴 1VP=2, 3VP=6에 구매",Only pay 2 Credits for 1-Point and 6 Credits for 3-Point Well-Architected cards in this turn.,,
+AWS_CLOUD_FINANCIAL_MANAGEMENT,Cloud Financial Mgmt,Cloud Financial Management,AWS 비용과 사용량을 관리·최적화하세요.,Tools to help control and optimize your AWS costs and usage.,도입 +1,+1 Cloud Adopt,,
+AWS_EC2_AUTO_SCALING,EC2 Auto Scaling,Amazon EC2 Auto Scaling,수요에 따라 컴퓨트 용량을 조절하세요.,Add or remove compute capacity to meet changes in demand.,,,,
+AWS_CLOUDFORMATION,CloudFormation,AWS CloudFormation,모든 인프라 리소스를 모델링·프로비저닝하세요.,Model and provision all your cloud infrastructure resources.,뽑기 +1,+1 Card Draw from Resource pile,,
+AWS_SYSTEMS_MANAGER,Systems Manager,AWS Systems Manager,온프레미스·AWS 리소스의 운영 인사이트를 확보하세요.,Gain operational insights into resources on AWS and on-premises.,EC2와 함께 도입 +1,+1 Cloud Adopt when combined with Amazon EC2.,,
+AWS_CDK,AWS CDK,AWS CDK,친숙한 프로그래밍 언어로 리소스를 정의하세요.,Define application resources using familiar programming languages.,버린 더미 1장을 덱 맨 위로,Take 1 card from Discard pile and place it on top of Resources pile.,,
+AMAZON_EC2,Amazon EC2,Amazon EC2,안전하고 크기 조절 가능한 컴퓨트 용량.,Secure and resizable compute capacity in the cloud.,,,,
+AWS_LAMBDA,AWS Lambda,AWS Lambda,"서버 걱정 없이 코드 실행, 쓴 만큼만 지불.",Run code without thinking about servers. Pay only for compute time consumed.,,,,
+AWS_IAM_IDENTITY_CENTER,IAM Identity Center,AWS IAM Identity Center,AWS 계정과 앱 접근을 중앙에서 관리.,Centrally manage access to AWS accounts and applications.,Corporate IdP와 함께 도입 +1,+1 Cloud Adopt when combined with Corporate Identity Provider,,
+AMAZON_S3,Amazon S3,Amazon S3,어디서든 데이터를 저장·조회하는 오브젝트 스토리지.,Object storage built to store and retrieve data from anywhere.,Lambda와 함께 뽑기 +1,+1 Card Draw when combined with AWS Lambda,,
+AMAZON_DYNAMODB,Amazon DynamoDB,Amazon DynamoDB,어떤 규모에도 빠른 NoSQL 데이터베이스.,Fast and flexible NoSQL database service for any scale.,컴퓨트/컨테이너당 크레딧 +1,1 Credit for every combination with compute/containers,Lambda와 함께 뽑기 +1,+1 Card Draw if paired with AWS Lambda
+AMAZON_SQS,Amazon SQS,Amazon SQS,마이크로서비스용 완전관리형 메시지 큐.,Fully managed message queues for microservices and serverless apps.,Lambda와 함께 크레딧 +2,2 Credits when combined with AWS Lambda,컴퓨트 2장과 함께 도입 +1,+1 Cloud Adopt when combined with two compute/containers services
+AMAZON_SNS,Amazon SNS,Amazon SNS,분산 시스템용 완전관리형 pub/sub 메시징.,Fully managed pub/sub messaging for distributed systems.,Lambda와 함께 크레딧 +2,2 Credits when combined with AWS Lambda,SQS당 뽑기 +1,+1 Card Draw for each combination with Amazon SQS
+AWS_FARGATE,AWS Fargate,AWS Fargate,서버·클러스터 관리 없는 컨테이너 실행.,Run containers without managing servers or clusters.,ECS/EKS와 함께 크레딧 +3·도입 +1,3 Credits and +1 Cloud Adopt when combined with ECS or EKS,,
+AMAZON_ECS,Amazon ECS,Amazon ECS,프로덕션 컨테이너 애플리케이션 실행.,Run containerized applications in production.,EC2와 함께 뽑기 +1,+1 Card Draw when combined with Amazon EC2,,
+AMAZON_EKS,Amazon EKS,Amazon EKS,고가용성·확장성 쿠버네티스 서비스.,"Highly available, scalable Kubernetes service.",EC2와 함께 뽑기 +1,+1 Card Draw when combined with Amazon EC2,,
+AMAZON_EFS,Amazon EFS,Amazon EFS,확장 가능한 탄력 NFS 파일 시스템.,"Scalable, elastic, cloud-native NFS file system.",EC2와 함께 뽑기 +1,+1 Card Draw when combined with Amazon EC2,Fargate/Lambda와 함께 도입 +1,+1 Cloud Adopt when combined with Fargate or Lambda
+AMAZON_API_GATEWAY,API Gateway,Amazon API Gateway,어떤 규모에도 API 생성·유지·보호.,"Create, maintain, and secure APIs at any scale.",컴퓨트/컨테이너당 크레딧 +1,1 Credit for every combination with compute/containers,SNS/SQS/S3/Firehose와 함께 뽑기 +1,"+1 Card Draw when combined with SNS, SQS, S3 or Firehose"
+AMAZON_VPC,Amazon VPC,Amazon VPC,AWS 클라우드의 격리된 영역 프로비저닝.,Provision an isolated section of the AWS Cloud.,,,,
+ELASTIC_LOAD_BALANCING,Elastic Load Balancing,Elastic Load Balancing,트래픽 분산으로 내결함성 확보.,Achieve fault tolerance for any application with traffic distribution.,컴퓨트/컨테이너당 크레딧 +2,2 Credits for every combination with compute/containers,Auto Scaling과 함께 뽑기 +1·도입 +1,+1 Draw & +1 Adoption when combined with Auto Scaling
+AMAZON_CLOUDFRONT,Amazon CloudFront,Amazon CloudFront,빠르고 안전한 프로그래밍 가능 CDN.,"Fast, highly secure programmable CDN.",S3와 함께 뽑기 +1,+1 Card Draw when combined with Amazon S3,ELB/VM과 함께 도입 +1,+1 Cloud Adopt when combined with ELB or Virtual Machine
+AMAZON_ROUTE53,Amazon Route 53,Amazon Route53,신뢰할 수 있는 인터넷 DNS 라우팅.,Reliable DNS routing to Internet applications.,CF/S3/APIGW/ELB와 함께 뽑기 +1,"+1 Card Draw when paired with CloudFront, S3, API Gateway or ELB",,
+AMAZON_REDSHIFT,Amazon Redshift,Amazon Redshift,고성능 클라우드 데이터 웨어하우스.,High-performance cloud data warehouse.,Aurora/Dynamo/RDS와 함께 크레딧 +3,"3 Credits when combined with Aurora, DynamoDB or RDS",S3와 함께 도입 +1,+1 Cloud Adopt when combined with Amazon S3
+AMAZON_ATHENA,Amazon Athena,Amazon Athena,S3용 서버리스 대화형 쿼리.,Serverless interactive query service for S3.,S3와 함께 크레딧 +3,3 Credits when combined with Amazon S3,,
+AMAZON_KINESIS_DATA_STREAMS,Kinesis Data Streams,Amazon Kinesis Data Streams,실시간 스트리밍 데이터를 대규모로 수집.,Collect real-time streaming data at scale.,컴퓨트/컨테이너당 크레딧 +1,1 Credit for every combination with compute/containers,Firehose와 함께 도입 +1,+1 Cloud Adopt when combined with Firehose
+AMAZON_OPENSEARCH_SERVICE,OpenSearch,Amazon OpenSearch Service,비정형 데이터 검색·시각화·분석.,"Search, visualize, and analyze unstructured data.",컴퓨트/컨테이너 카드당 크레딧 +1,1 Credit for every compute/containers card in architecture,,
+AMAZON_DATA_FIREHOSE,Data Firehose,Amazon Data Firehose,실시간 스트림을 저장소·분석 도구로 적재.,Load real-time streams into data stores and analytics tools.,S3/Redshift와 함께 도입 +1,+1 Cloud Adopt when combined with S3 or Redshift,OpenSearch와 함께 뽑기 +1,+1 Card Draw when combined with OpenSearch
+AMAZON_ELASTICACHE,ElastiCache,Amazon ElastiCache,Redis/Memcached 호환 인메모리 스토어.,In-memory data store compatible with Redis/Memcached.,컴퓨트/컨테이너와 함께 크레딧 +2,2 Credits when combined with compute/containers,RDS/Aurora와 함께 뽑기 +1,+1 Card Draw when combined with RDS or Aurora
+AMAZON_RDS,Amazon RDS,Amazon RDS,클라우드의 관리형 관계형 데이터베이스.,Managed relational database in the cloud.,컴퓨트/컨테이너와 함께 크레딧 +2,2 Credits when combined with compute/containers,,
+AMAZON_AURORA,Amazon Aurora,Amazon Aurora,고성능 MySQL/PostgreSQL 관계형 DB.,High-performance MySQL/PostgreSQL relational database.,컴퓨트/컨테이너와 함께 크레딧 +3,3 Credits when combined with compute/containers,,
+AMAZON_CODECATALYST,CodeCatalyst,Amazon CodeCatalyst,AWS 개발·전달을 가속화.,"Accelerate planning, development, and delivery on AWS.",컴퓨트/컨테이너당 크레딧 +1,1 Credit for every compute/containers card in architecture,,
+AMAZON_CLOUDWATCH,CloudWatch,Amazon CloudWatch,AWS 리소스 관측·모니터링.,Observability and monitoring of AWS resources.,다른 카드당 크레딧 +1,1 Credit for every other card deployed in architecture,,
+AWS_CLOUDTRAIL,CloudTrail,AWS CloudTrail,AWS 사용자 활동·API 사용 추적.,Track user activity and API usage across AWS.,OpenSearch와 함께 뽑기 +1,+1 Card Draw when combined with OpenSearch,Athena와 함께 도입 +1,+1 Cloud Adopt when combined with Athena
+AMAZON_EVENTBRIDGE,EventBridge,Amazon EventBridge,규모에 맞는 이벤트 기반 앱 구축.,Build event-driven applications at scale.,Lambda와 함께 뽑기 +1,+1 Card Draw when combined with AWS Lambda,다른 서비스와 함께 크레딧 +2,2 Credits when combined with any other AWS service
+AWS_STEP_FUNCTIONS,Step Functions,AWS Step Functions,분산 앱용 비주얼 워크플로.,Visual workflows for distributed applications.,Lambda당 크레딧 +2,2 Credits for each combination with AWS Lambda,,
+AWS_MARKETPLACE,AWS Marketplace,AWS Marketplace,소프트웨어 검색·구매·배포 카탈로그.,"Digital catalog to find, buy, and deploy software.",EC2와 함께 도입 +1,+1 Cloud Adopt when combined with Amazon EC2,,

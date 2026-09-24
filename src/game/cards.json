@@ -1,0 +1,1422 @@
+{
+  "game": "AWS BuilderCards 2nd Edition (Fan Edition)",
+  "count": 47,
+  "cards": [
+    {
+      "cardId": "ONPREM_SAN",
+      "name": {
+        "ko": "SAN",
+        "en": "SAN (Storage Area Network)"
+      },
+      "category": "On-Premises",
+      "frameType": "ON_PREM",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityPerColor": 1,
+      "totalQuantity": 4,
+      "description": {
+        "ko": "중앙 집중식 스토리지 영역 네트워크.",
+        "en": ""
+      },
+      "combos": []
+    },
+    {
+      "cardId": "ONPREM_BARE_METAL",
+      "name": {
+        "ko": "Bare Metal Host",
+        "en": "Bare Metal Host"
+      },
+      "category": "On-Premises",
+      "frameType": "ON_PREM",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityPerColor": 3,
+      "totalQuantity": 12,
+      "description": {
+        "ko": "가상화 없이 직접 실행하는 물리 서버.",
+        "en": ""
+      },
+      "combos": []
+    },
+    {
+      "cardId": "ONPREM_VM",
+      "name": {
+        "ko": "Virtual Machine",
+        "en": "Virtual Machine"
+      },
+      "category": "On-Premises",
+      "frameType": "ON_PREM",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityPerColor": 1,
+      "totalQuantity": 4,
+      "description": {
+        "ko": "유연한 가상화 컴퓨팅, 워크로드를 클라우드로.",
+        "en": ""
+      },
+      "combos": [
+        {
+          "targetCardId": "ONPREM_BARE_METAL",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "Bare Metal Host와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with Bare Metal Host."
+          }
+        }
+      ]
+    },
+    {
+      "cardId": "ONPREM_DB_SERVER",
+      "name": {
+        "ko": "Database Server",
+        "en": "Database Server"
+      },
+      "category": "On-Premises",
+      "frameType": "ON_PREM",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityPerColor": 1,
+      "totalQuantity": 4,
+      "description": {
+        "ko": "온프레미스 데이터베이스 서버.",
+        "en": ""
+      },
+      "combos": []
+    },
+    {
+      "cardId": "ONPREM_NETWORKING",
+      "name": {
+        "ko": "Networking",
+        "en": "Networking"
+      },
+      "category": "On-Premises",
+      "frameType": "ON_PREM",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityPerColor": 1,
+      "totalQuantity": 4,
+      "description": {
+        "ko": "온프레미스 네트워크 장비.",
+        "en": ""
+      },
+      "combos": []
+    },
+    {
+      "cardId": "ONPREM_DOC_STORE",
+      "name": {
+        "ko": "Document Store",
+        "en": "Document Store"
+      },
+      "category": "On-Premises",
+      "frameType": "ON_PREM",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityPerColor": 1,
+      "totalQuantity": 4,
+      "description": {
+        "ko": "온프레미스 문서 저장소.",
+        "en": ""
+      },
+      "combos": []
+    },
+    {
+      "cardId": "ONPREM_DW",
+      "name": {
+        "ko": "Data Warehouse",
+        "en": "Data Warehouse"
+      },
+      "category": "On-Premises",
+      "frameType": "ON_PREM",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityPerColor": 1,
+      "totalQuantity": 4,
+      "description": {
+        "ko": "온프레미스 데이터 웨어하우스.",
+        "en": ""
+      },
+      "combos": []
+    },
+    {
+      "cardId": "ONPREM_ID_PROVIDER",
+      "name": {
+        "ko": "Corporate IdP",
+        "en": "Corporate Identity Provider"
+      },
+      "category": "On-Premises",
+      "frameType": "ON_PREM",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityPerColor": 1,
+      "totalQuantity": 4,
+      "description": {
+        "ko": "사내 identity 공급자.",
+        "en": ""
+      },
+      "combos": []
+    },
+    {
+      "cardId": "WA_1VP",
+      "name": {
+        "ko": "Well-Architected 1VP",
+        "en": "AWS Well-Architected (1 VP)"
+      },
+      "category": "Well-Architected",
+      "frameType": "WELL_ARCHITECTED",
+      "cost": 4,
+      "baseCredits": 0,
+      "victoryPoints": 1,
+      "maxQuantity": 7,
+      "description": {
+        "ko": "게임 종료 시 승점 1점",
+        "en": "Provides 1 Victory Point at game end."
+      },
+      "combos": [],
+      "icon": "/icons/well-architected.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "WA_3VP",
+      "name": {
+        "ko": "Well-Architected 3VP",
+        "en": "AWS Well-Architected (3 VP)"
+      },
+      "category": "Well-Architected",
+      "frameType": "WELL_ARCHITECTED",
+      "cost": 8,
+      "baseCredits": 0,
+      "victoryPoints": 3,
+      "maxQuantity": 5,
+      "description": {
+        "ko": "게임 종료 시 승점 3점",
+        "en": "Provides 3 Victory Points at game end."
+      },
+      "combos": [],
+      "icon": "/icons/well-architected.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AWS_WELL_ARCHITECTED_TOOL",
+      "name": {
+        "ko": "Well-Architected Tool",
+        "en": "AWS Well-Architected Tool"
+      },
+      "category": "management & governance",
+      "frameType": "AWS_SERVICE",
+      "cost": 4,
+      "baseCredits": 1,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "아키텍처를 검토하고 모범 사례를 도입하세요.",
+        "en": "Review your architecture and adopt best practices."
+      },
+      "combos": [
+        {
+          "bonusType": "WA_COST_DISCOUNT",
+          "discountRules": {
+            "vp_1_cost_override": 2,
+            "vp_3_cost_override": 6
+          },
+          "description": {
+            "ko": "이번 턴 1VP=2, 3VP=6에 구매",
+            "en": "Only pay 2 Credits for 1-Point and 6 Credits for 3-Point Well-Architected cards in this turn."
+          }
+        }
+      ],
+      "icon": "/icons/well-architected.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AWS_CLOUD_FINANCIAL_MANAGEMENT",
+      "name": {
+        "ko": "Cloud Financial Mgmt",
+        "en": "Cloud Financial Management"
+      },
+      "category": "cloud financial management",
+      "frameType": "AWS_SERVICE",
+      "cost": 3,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "AWS 비용과 사용량을 관리·최적화하세요.",
+        "en": "Tools to help control and optimize your AWS costs and usage."
+      },
+      "combos": [
+        {
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "도입 +1",
+            "en": "+1 Cloud Adopt"
+          }
+        }
+      ],
+      "turnEndAction": {
+        "actionType": "EXILE",
+        "destinationLocation": "RETIRED_PILE",
+        "description": {
+          "ko": "턴 종료 시 게임에서 제거",
+          "en": "Permanently removed from the game at turn end."
+        }
+      },
+      "icon": "/icons/cfm.svg",
+      "iconBg": "#7AA116"
+    },
+    {
+      "cardId": "AWS_EC2_AUTO_SCALING",
+      "name": {
+        "ko": "EC2 Auto Scaling",
+        "en": "Amazon EC2 Auto Scaling"
+      },
+      "category": "compute",
+      "frameType": "AWS_SERVICE",
+      "cost": 3,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "수요에 따라 컴퓨트 용량을 조절하세요.",
+        "en": "Add or remove compute capacity to meet changes in demand."
+      },
+      "combos": [],
+      "stackBonus": {
+        "targetCardId": "AMAZON_EC2",
+        "overrideCredits": 4,
+        "description": {
+          "ko": "EC2와 함께 크레딧 4",
+          "en": "4 Credits when stacked with Amazon EC2."
+        }
+      },
+      "restrictions": {
+        "cannotStandaloneCombo": [
+          "compute",
+          "containers"
+        ],
+        "description": {
+          "ko": "단독 콤보 불가",
+          "en": "Cannot fulfill compute/container combinations alone."
+        }
+      },
+      "icon": "/icons/ec2-auto-scaling.svg",
+      "iconBg": "#ED7100"
+    },
+    {
+      "cardId": "AWS_CLOUDFORMATION",
+      "name": {
+        "ko": "CloudFormation",
+        "en": "AWS CloudFormation"
+      },
+      "category": "management & governance",
+      "frameType": "AWS_SERVICE",
+      "cost": 3,
+      "baseCredits": 2,
+      "quantityInDeck": 3,
+      "description": {
+        "ko": "모든 인프라 리소스를 모델링·프로비저닝하세요.",
+        "en": "Model and provision all your cloud infrastructure resources."
+      },
+      "combos": [
+        {
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "뽑기 +1",
+            "en": "+1 Card Draw from Resource pile"
+          }
+        }
+      ],
+      "icon": "/icons/cloudformation.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AWS_SYSTEMS_MANAGER",
+      "name": {
+        "ko": "Systems Manager",
+        "en": "AWS Systems Manager"
+      },
+      "category": "management & governance",
+      "frameType": "AWS_SERVICE",
+      "cost": 3,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "온프레미스·AWS 리소스의 운영 인사이트를 확보하세요.",
+        "en": "Gain operational insights into resources on AWS and on-premises."
+      },
+      "combos": [
+        {
+          "targetCardId": "AMAZON_EC2",
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "EC2와 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with Amazon EC2."
+          }
+        }
+      ],
+      "icon": "/icons/systems-manager.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AWS_CDK",
+      "name": {
+        "ko": "AWS CDK",
+        "en": "AWS CDK"
+      },
+      "category": "developer tools",
+      "frameType": "AWS_SERVICE",
+      "cost": 4,
+      "baseCredits": 1,
+      "quantityInDeck": 4,
+      "description": {
+        "ko": "친숙한 프로그래밍 언어로 리소스를 정의하세요.",
+        "en": "Define application resources using familiar programming languages."
+      },
+      "combos": [
+        {
+          "bonusType": "RECOVER_TO_DECK_TOP",
+          "description": {
+            "ko": "버린 더미 1장을 덱 맨 위로",
+            "en": "Take 1 card from Discard pile and place it on top of Resources pile."
+          }
+        }
+      ],
+      "icon": "/icons/cdk.svg",
+      "iconBg": "#C925D1"
+    },
+    {
+      "cardId": "AMAZON_EC2",
+      "name": {
+        "ko": "Amazon EC2",
+        "en": "Amazon EC2"
+      },
+      "category": "compute",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 8,
+      "stackable": true,
+      "description": {
+        "ko": "안전하고 크기 조절 가능한 컴퓨트 용량.",
+        "en": "Secure and resizable compute capacity in the cloud."
+      },
+      "combos": [],
+      "stackBonus": {
+        "0": {
+          "stackCount": 2,
+          "totalCredits": 5
+        },
+        "1": {
+          "stackCount": 3,
+          "totalCredits": 10
+        },
+        "description": {
+          "en": ""
+        }
+      },
+      "icon": "/icons/ec2.svg",
+      "iconBg": "#ED7100"
+    },
+    {
+      "cardId": "AWS_LAMBDA",
+      "name": {
+        "ko": "AWS Lambda",
+        "en": "AWS Lambda"
+      },
+      "category": "compute",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 1,
+      "quantityInDeck": 6,
+      "description": {
+        "ko": "서버 걱정 없이 코드 실행, 쓴 만큼만 지불.",
+        "en": "Run code without thinking about servers. Pay only for compute time consumed."
+      },
+      "combos": [],
+      "icon": "/icons/lambda.svg",
+      "iconBg": "#ED7100"
+    },
+    {
+      "cardId": "AWS_IAM_IDENTITY_CENTER",
+      "name": {
+        "ko": "IAM Identity Center",
+        "en": "AWS IAM Identity Center"
+      },
+      "category": "security, identity & compliance",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 1,
+      "quantityInDeck": 3,
+      "description": {
+        "ko": "AWS 계정과 앱 접근을 중앙에서 관리.",
+        "en": "Centrally manage access to AWS accounts and applications."
+      },
+      "combos": [
+        {
+          "targetCardId": "ONPREM_ID_PROVIDER",
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "Corporate IdP와 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with Corporate Identity Provider"
+          }
+        }
+      ],
+      "icon": "/icons/iam-identity-center.svg",
+      "iconBg": "#DD344C"
+    },
+    {
+      "cardId": "AMAZON_S3",
+      "name": {
+        "ko": "Amazon S3",
+        "en": "Amazon S3"
+      },
+      "category": "storage",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 4,
+      "description": {
+        "ko": "어디서든 데이터를 저장·조회하는 오브젝트 스토리지.",
+        "en": "Object storage built to store and retrieve data from anywhere."
+      },
+      "combos": [
+        {
+          "targetCardId": "AWS_LAMBDA",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "Lambda와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with AWS Lambda"
+          }
+        }
+      ],
+      "icon": "/icons/s3.svg",
+      "iconBg": "#7AA116"
+    },
+    {
+      "cardId": "AMAZON_DYNAMODB",
+      "name": {
+        "ko": "Amazon DynamoDB",
+        "en": "Amazon DynamoDB"
+      },
+      "category": "database",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 3,
+      "description": {
+        "ko": "어떤 규모에도 빠른 NoSQL 데이터베이스.",
+        "en": "Fast and flexible NoSQL database service for any scale."
+      },
+      "combos": [
+        {
+          "targetCategory": [
+            "compute",
+            "containers"
+          ],
+          "bonusType": "CREDIT_PER_COMBINATION",
+          "bonusValue": 1,
+          "description": {
+            "ko": "컴퓨트/컨테이너당 크레딧 +1",
+            "en": "1 Credit for every combination with compute/containers"
+          }
+        },
+        {
+          "targetCardId": "AWS_LAMBDA",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "Lambda와 함께 뽑기 +1",
+            "en": "+1 Card Draw if paired with AWS Lambda"
+          }
+        }
+      ],
+      "icon": "/icons/dynamodb.svg",
+      "iconBg": "#C925D1"
+    },
+    {
+      "cardId": "AMAZON_SQS",
+      "name": {
+        "ko": "Amazon SQS",
+        "en": "Amazon SQS"
+      },
+      "category": "application integration",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 3,
+      "description": {
+        "ko": "마이크로서비스용 완전관리형 메시지 큐.",
+        "en": "Fully managed message queues for microservices and serverless apps."
+      },
+      "combos": [
+        {
+          "targetCardId": "AWS_LAMBDA",
+          "bonusType": "CREDIT",
+          "bonusValue": 2,
+          "description": {
+            "ko": "Lambda와 함께 크레딧 +2",
+            "en": "2 Credits when combined with AWS Lambda"
+          }
+        },
+        {
+          "targetCategory": [
+            "compute",
+            "containers"
+          ],
+          "condition": "REQUIRES_TWO_CARDS",
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "컴퓨트 2장과 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with two compute/containers services"
+          }
+        }
+      ],
+      "icon": "/icons/sqs.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AMAZON_SNS",
+      "name": {
+        "ko": "Amazon SNS",
+        "en": "Amazon SNS"
+      },
+      "category": "application integration",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 3,
+      "description": {
+        "ko": "분산 시스템용 완전관리형 pub/sub 메시징.",
+        "en": "Fully managed pub/sub messaging for distributed systems."
+      },
+      "combos": [
+        {
+          "targetCardId": "AWS_LAMBDA",
+          "bonusType": "CREDIT",
+          "bonusValue": 2,
+          "description": {
+            "ko": "Lambda와 함께 크레딧 +2",
+            "en": "2 Credits when combined with AWS Lambda"
+          }
+        },
+        {
+          "targetCardId": "AMAZON_SQS",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "SQS당 뽑기 +1",
+            "en": "+1 Card Draw for each combination with Amazon SQS"
+          }
+        }
+      ],
+      "icon": "/icons/sns.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AWS_FARGATE",
+      "name": {
+        "ko": "AWS Fargate",
+        "en": "AWS Fargate"
+      },
+      "category": "containers",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 0,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "서버·클러스터 관리 없는 컨테이너 실행.",
+        "en": "Run containers without managing servers or clusters."
+      },
+      "combos": [
+        {
+          "targetCardId": [
+            "AMAZON_ECS",
+            "AMAZON_EKS"
+          ],
+          "bonusType": "CREDIT_AND_ADOPT",
+          "creditValue": 3,
+          "adoptValue": 1,
+          "description": {
+            "ko": "ECS/EKS와 함께 크레딧 +3·도입 +1",
+            "en": "3 Credits and +1 Cloud Adopt when combined with ECS or EKS"
+          }
+        }
+      ],
+      "restrictions": {
+        "cannotStandaloneCombo": true,
+        "description": {
+          "ko": "ECS/EKS 필요",
+          "en": "Cannot fulfill container combos alone."
+        }
+      },
+      "icon": "/icons/fargate.svg",
+      "iconBg": "#ED7100"
+    },
+    {
+      "cardId": "AMAZON_ECS",
+      "name": {
+        "ko": "Amazon ECS",
+        "en": "Amazon ECS"
+      },
+      "category": "containers",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "프로덕션 컨테이너 애플리케이션 실행.",
+        "en": "Run containerized applications in production."
+      },
+      "combos": [
+        {
+          "targetCardId": "AMAZON_EC2",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "EC2와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with Amazon EC2"
+          }
+        }
+      ],
+      "icon": "/icons/ecs.svg",
+      "iconBg": "#ED7100"
+    },
+    {
+      "cardId": "AMAZON_EKS",
+      "name": {
+        "ko": "Amazon EKS",
+        "en": "Amazon EKS"
+      },
+      "category": "containers",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "고가용성·확장성 쿠버네티스 서비스.",
+        "en": "Highly available, scalable Kubernetes service."
+      },
+      "combos": [
+        {
+          "targetCardId": "AMAZON_EC2",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "EC2와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with Amazon EC2"
+          }
+        }
+      ],
+      "icon": "/icons/eks.svg",
+      "iconBg": "#ED7100"
+    },
+    {
+      "cardId": "AMAZON_EFS",
+      "name": {
+        "ko": "Amazon EFS",
+        "en": "Amazon EFS"
+      },
+      "category": "storage",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "확장 가능한 탄력 NFS 파일 시스템.",
+        "en": "Scalable, elastic, cloud-native NFS file system."
+      },
+      "combos": [
+        {
+          "targetCardId": "AMAZON_EC2",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "EC2와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with Amazon EC2"
+          }
+        },
+        {
+          "targetCardId": [
+            "AWS_FARGATE",
+            "AWS_LAMBDA"
+          ],
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "Fargate/Lambda와 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with Fargate or Lambda"
+          }
+        }
+      ],
+      "icon": "/icons/efs.svg",
+      "iconBg": "#7AA116"
+    },
+    {
+      "cardId": "AMAZON_API_GATEWAY",
+      "name": {
+        "ko": "API Gateway",
+        "en": "Amazon API Gateway"
+      },
+      "category": "networking & content delivery",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 1,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "어떤 규모에도 API 생성·유지·보호.",
+        "en": "Create, maintain, and secure APIs at any scale."
+      },
+      "combos": [
+        {
+          "targetCategory": [
+            "compute",
+            "containers"
+          ],
+          "bonusType": "CREDIT_PER_COMBINATION",
+          "bonusValue": 1,
+          "description": {
+            "ko": "컴퓨트/컨테이너당 크레딧 +1",
+            "en": "1 Credit for every combination with compute/containers"
+          }
+        },
+        {
+          "targetCardId": [
+            "AMAZON_SNS",
+            "AMAZON_SQS",
+            "AMAZON_S3",
+            "AMAZON_DATA_FIREHOSE"
+          ],
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "SNS/SQS/S3/Firehose와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with SNS, SQS, S3 or Firehose"
+          }
+        }
+      ],
+      "icon": "/icons/api-gateway.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_VPC",
+      "name": {
+        "ko": "Amazon VPC",
+        "en": "Amazon VPC"
+      },
+      "category": "networking & content delivery",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 1,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "AWS 클라우드의 격리된 영역 프로비저닝.",
+        "en": "Provision an isolated section of the AWS Cloud."
+      },
+      "combos": [],
+      "icon": "/icons/vpc.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "ELASTIC_LOAD_BALANCING",
+      "name": {
+        "ko": "Elastic Load Balancing",
+        "en": "Elastic Load Balancing"
+      },
+      "category": "networking & content delivery",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "트래픽 분산으로 내결함성 확보.",
+        "en": "Achieve fault tolerance for any application with traffic distribution."
+      },
+      "combos": [
+        {
+          "targetCategory": [
+            "compute",
+            "containers"
+          ],
+          "bonusType": "CREDIT_PER_COMBINATION",
+          "bonusValue": 2,
+          "description": {
+            "ko": "컴퓨트/컨테이너당 크레딧 +2",
+            "en": "2 Credits for every combination with compute/containers"
+          }
+        },
+        {
+          "targetCardId": "AWS_EC2_AUTO_SCALING",
+          "bonusType": "DRAW_AND_ADOPT",
+          "drawValue": 1,
+          "adoptValue": 1,
+          "description": {
+            "ko": "Auto Scaling과 함께 뽑기 +1·도입 +1",
+            "en": "+1 Draw & +1 Adoption when combined with Auto Scaling"
+          }
+        }
+      ],
+      "icon": "/icons/elb.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_CLOUDFRONT",
+      "name": {
+        "ko": "Amazon CloudFront",
+        "en": "Amazon CloudFront"
+      },
+      "category": "networking & content delivery",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "빠르고 안전한 프로그래밍 가능 CDN.",
+        "en": "Fast, highly secure programmable CDN."
+      },
+      "combos": [
+        {
+          "targetCardId": "AMAZON_S3",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "S3와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with Amazon S3"
+          }
+        },
+        {
+          "targetCardId": [
+            "ELASTIC_LOAD_BALANCING",
+            "ONPREM_VM"
+          ],
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "ELB/VM과 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with ELB or Virtual Machine"
+          }
+        }
+      ],
+      "icon": "/icons/cloudfront.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_ROUTE53",
+      "name": {
+        "ko": "Amazon Route 53",
+        "en": "Amazon Route53"
+      },
+      "category": "networking & content delivery",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "신뢰할 수 있는 인터넷 DNS 라우팅.",
+        "en": "Reliable DNS routing to Internet applications."
+      },
+      "combos": [
+        {
+          "targetCardId": [
+            "AMAZON_CLOUDFRONT",
+            "AMAZON_S3",
+            "AMAZON_API_GATEWAY",
+            "ELASTIC_LOAD_BALANCING"
+          ],
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "CF/S3/APIGW/ELB와 함께 뽑기 +1",
+            "en": "+1 Card Draw when paired with CloudFront, S3, API Gateway or ELB"
+          }
+        }
+      ],
+      "icon": "/icons/route53.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_REDSHIFT",
+      "name": {
+        "ko": "Amazon Redshift",
+        "en": "Amazon Redshift"
+      },
+      "category": "analytics",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "고성능 클라우드 데이터 웨어하우스.",
+        "en": "High-performance cloud data warehouse."
+      },
+      "combos": [
+        {
+          "targetCardId": [
+            "AMAZON_AURORA",
+            "AMAZON_DYNAMODB",
+            "AMAZON_RDS"
+          ],
+          "bonusType": "CREDIT",
+          "bonusValue": 3,
+          "description": {
+            "ko": "Aurora/Dynamo/RDS와 함께 크레딧 +3",
+            "en": "3 Credits when combined with Aurora, DynamoDB or RDS"
+          }
+        },
+        {
+          "targetCardId": "AMAZON_S3",
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "S3와 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with Amazon S3"
+          }
+        }
+      ],
+      "icon": "/icons/redshift.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_ATHENA",
+      "name": {
+        "ko": "Amazon Athena",
+        "en": "Amazon Athena"
+      },
+      "category": "analytics",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 1,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "S3용 서버리스 대화형 쿼리.",
+        "en": "Serverless interactive query service for S3."
+      },
+      "combos": [
+        {
+          "targetCardId": "AMAZON_S3",
+          "bonusType": "CREDIT",
+          "bonusValue": 3,
+          "description": {
+            "ko": "S3와 함께 크레딧 +3",
+            "en": "3 Credits when combined with Amazon S3"
+          }
+        }
+      ],
+      "icon": "/icons/athena.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_KINESIS_DATA_STREAMS",
+      "name": {
+        "ko": "Kinesis Data Streams",
+        "en": "Amazon Kinesis Data Streams"
+      },
+      "category": "analytics",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "실시간 스트리밍 데이터를 대규모로 수집.",
+        "en": "Collect real-time streaming data at scale."
+      },
+      "combos": [
+        {
+          "targetCategory": [
+            "compute",
+            "containers"
+          ],
+          "bonusType": "CREDIT_PER_COMBINATION",
+          "bonusValue": 1,
+          "description": {
+            "ko": "컴퓨트/컨테이너당 크레딧 +1",
+            "en": "1 Credit for every combination with compute/containers"
+          }
+        },
+        {
+          "targetCardId": "AMAZON_DATA_FIREHOSE",
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "Firehose와 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with Firehose"
+          }
+        }
+      ],
+      "icon": "/icons/kinesis.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_OPENSEARCH_SERVICE",
+      "name": {
+        "ko": "OpenSearch",
+        "en": "Amazon OpenSearch Service"
+      },
+      "category": "analytics",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "비정형 데이터 검색·시각화·분석.",
+        "en": "Search, visualize, and analyze unstructured data."
+      },
+      "combos": [
+        {
+          "condition": "DEPLOY_WITH_COMPUTE_CONTAINERS",
+          "bonusType": "CREDIT_PER_COMPUTE_CONTAINER_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "컴퓨트/컨테이너 카드당 크레딧 +1",
+            "en": "1 Credit for every compute/containers card in architecture"
+          }
+        }
+      ],
+      "icon": "/icons/opensearch.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_DATA_FIREHOSE",
+      "name": {
+        "ko": "Data Firehose",
+        "en": "Amazon Data Firehose"
+      },
+      "category": "analytics",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "실시간 스트림을 저장소·분석 도구로 적재.",
+        "en": "Load real-time streams into data stores and analytics tools."
+      },
+      "combos": [
+        {
+          "targetCardId": [
+            "AMAZON_S3",
+            "AMAZON_REDSHIFT"
+          ],
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "S3/Redshift와 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with S3 or Redshift"
+          }
+        },
+        {
+          "targetCardId": "AMAZON_OPENSEARCH_SERVICE",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "OpenSearch와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with OpenSearch"
+          }
+        }
+      ],
+      "icon": "/icons/firehose.svg",
+      "iconBg": "#8C4FFF"
+    },
+    {
+      "cardId": "AMAZON_ELASTICACHE",
+      "name": {
+        "ko": "ElastiCache",
+        "en": "Amazon ElastiCache"
+      },
+      "category": "database",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "Redis/Memcached 호환 인메모리 스토어.",
+        "en": "In-memory data store compatible with Redis/Memcached."
+      },
+      "combos": [
+        {
+          "targetCategory": [
+            "compute",
+            "containers"
+          ],
+          "bonusType": "CREDIT",
+          "bonusValue": 2,
+          "description": {
+            "ko": "컴퓨트/컨테이너와 함께 크레딧 +2",
+            "en": "2 Credits when combined with compute/containers"
+          }
+        },
+        {
+          "targetCardId": [
+            "AMAZON_RDS",
+            "AMAZON_AURORA"
+          ],
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "RDS/Aurora와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with RDS or Aurora"
+          }
+        }
+      ],
+      "icon": "/icons/elasticache.svg",
+      "iconBg": "#C925D1"
+    },
+    {
+      "cardId": "AMAZON_RDS",
+      "name": {
+        "ko": "Amazon RDS",
+        "en": "Amazon RDS"
+      },
+      "category": "database",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "클라우드의 관리형 관계형 데이터베이스.",
+        "en": "Managed relational database in the cloud."
+      },
+      "combos": [
+        {
+          "targetCategory": [
+            "compute",
+            "containers"
+          ],
+          "bonusType": "CREDIT",
+          "bonusValue": 2,
+          "description": {
+            "ko": "컴퓨트/컨테이너와 함께 크레딧 +2",
+            "en": "2 Credits when combined with compute/containers"
+          }
+        }
+      ],
+      "icon": "/icons/rds.svg",
+      "iconBg": "#C925D1"
+    },
+    {
+      "cardId": "AMAZON_AURORA",
+      "name": {
+        "ko": "Amazon Aurora",
+        "en": "Amazon Aurora"
+      },
+      "category": "database",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "고성능 MySQL/PostgreSQL 관계형 DB.",
+        "en": "High-performance MySQL/PostgreSQL relational database."
+      },
+      "combos": [
+        {
+          "targetCategory": [
+            "compute",
+            "containers"
+          ],
+          "bonusType": "CREDIT",
+          "bonusValue": 3,
+          "description": {
+            "ko": "컴퓨트/컨테이너와 함께 크레딧 +3",
+            "en": "3 Credits when combined with compute/containers"
+          }
+        }
+      ],
+      "icon": "/icons/aurora.svg",
+      "iconBg": "#C925D1"
+    },
+    {
+      "cardId": "AMAZON_CODECATALYST",
+      "name": {
+        "ko": "CodeCatalyst",
+        "en": "Amazon CodeCatalyst"
+      },
+      "category": "developer tools",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "AWS 개발·전달을 가속화.",
+        "en": "Accelerate planning, development, and delivery on AWS."
+      },
+      "combos": [
+        {
+          "condition": "DEPLOY_WITH_COMPUTE_CONTAINERS",
+          "bonusType": "CREDIT_PER_COMPUTE_CONTAINER_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "컴퓨트/컨테이너당 크레딧 +1",
+            "en": "1 Credit for every compute/containers card in architecture"
+          }
+        }
+      ],
+      "icon": "/icons/codecatalyst.svg",
+      "iconBg": "#C925D1"
+    },
+    {
+      "cardId": "AMAZON_CLOUDWATCH",
+      "name": {
+        "ko": "CloudWatch",
+        "en": "Amazon CloudWatch"
+      },
+      "category": "management & governance",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "AWS 리소스 관측·모니터링.",
+        "en": "Observability and monitoring of AWS resources."
+      },
+      "combos": [
+        {
+          "condition": "DEPLOY_WITH_ANY_ARCHITECTURE",
+          "bonusType": "CREDIT_PER_OTHER_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "다른 카드당 크레딧 +1",
+            "en": "1 Credit for every other card deployed in architecture"
+          }
+        }
+      ],
+      "icon": "/icons/cloudwatch.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AWS_CLOUDTRAIL",
+      "name": {
+        "ko": "CloudTrail",
+        "en": "AWS CloudTrail"
+      },
+      "category": "management & governance",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "AWS 사용자 활동·API 사용 추적.",
+        "en": "Track user activity and API usage across AWS."
+      },
+      "combos": [
+        {
+          "targetCardId": "AMAZON_OPENSEARCH_SERVICE",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "OpenSearch와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with OpenSearch"
+          }
+        },
+        {
+          "targetCardId": "AMAZON_ATHENA",
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "Athena와 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with Athena"
+          }
+        }
+      ],
+      "icon": "/icons/cloudtrail.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AMAZON_EVENTBRIDGE",
+      "name": {
+        "ko": "EventBridge",
+        "en": "Amazon EventBridge"
+      },
+      "category": "application integration",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "규모에 맞는 이벤트 기반 앱 구축.",
+        "en": "Build event-driven applications at scale."
+      },
+      "combos": [
+        {
+          "targetCardId": "AWS_LAMBDA",
+          "bonusType": "DRAW_CARD",
+          "bonusValue": 1,
+          "description": {
+            "ko": "Lambda와 함께 뽑기 +1",
+            "en": "+1 Card Draw when combined with AWS Lambda"
+          }
+        },
+        {
+          "targetAnyOtherService": true,
+          "bonusType": "CREDIT",
+          "bonusValue": 2,
+          "description": {
+            "ko": "다른 서비스와 함께 크레딧 +2",
+            "en": "2 Credits when combined with any other AWS service"
+          }
+        }
+      ],
+      "icon": "/icons/eventbridge.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AWS_STEP_FUNCTIONS",
+      "name": {
+        "ko": "Step Functions",
+        "en": "AWS Step Functions"
+      },
+      "category": "application integration",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 2,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "분산 앱용 비주얼 워크플로.",
+        "en": "Visual workflows for distributed applications."
+      },
+      "combos": [
+        {
+          "targetCardId": "AWS_LAMBDA",
+          "bonusType": "CREDIT_PER_COMBINATION",
+          "bonusValue": 2,
+          "description": {
+            "ko": "Lambda당 크레딧 +2",
+            "en": "2 Credits for each combination with AWS Lambda"
+          }
+        }
+      ],
+      "icon": "/icons/step-functions.svg",
+      "iconBg": "#E7157B"
+    },
+    {
+      "cardId": "AWS_MARKETPLACE",
+      "name": {
+        "ko": "AWS Marketplace",
+        "en": "AWS Marketplace"
+      },
+      "category": "marketplace",
+      "frameType": "AWS_SERVICE",
+      "cost": 0,
+      "baseCredits": 1,
+      "quantityInDeck": 2,
+      "description": {
+        "ko": "소프트웨어 검색·구매·배포 카탈로그.",
+        "en": "Digital catalog to find, buy, and deploy software."
+      },
+      "combos": [
+        {
+          "targetCardId": "AMAZON_EC2",
+          "bonusType": "CLOUD_ADOPT",
+          "bonusValue": 1,
+          "description": {
+            "ko": "EC2와 함께 도입 +1",
+            "en": "+1 Cloud Adopt when combined with Amazon EC2"
+          }
+        }
+      ],
+      "icon": "/icons/marketplace.svg",
+      "iconBg": "#232F3E"
+    }
+  ]
+}
