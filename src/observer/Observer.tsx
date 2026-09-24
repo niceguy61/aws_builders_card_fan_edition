@@ -7,16 +7,16 @@ import type { CardInstance } from '../game/engine';
 
 // 매트 % 좌표 (mat-2p.png 8401x7201 기준 실측)
 const Z = {
-  freeDeck: { left: '27%', top: '7%', width: '9%', height: '17%' },
-  waDeck: { left: '56%', top: '7%', width: '9%', height: '17%' },
-  costDeck: { left: '66%', top: '7%', width: '9%', height: '17%' },
+  freeDeck: { left: '27%', top: '9%', width: '9%', height: '15%' },
+  waDeck: { left: '56%', top: '9%', width: '9%', height: '15%' },
+  costDeck: { left: '66%', top: '9%', width: '9%', height: '15%' },
   slots: [
-    { left: '18%', top: '27%', width: '9%', height: '15%' },
-    { left: '28%', top: '27%', width: '9%', height: '15%' },
-    { left: '38%', top: '27%', width: '9%', height: '15%' },
-    { left: '48%', top: '27%', width: '9%', height: '15%' },
-    { left: '58%', top: '27%', width: '9%', height: '15%' },
-    { left: '68%', top: '27%', width: '9%', height: '15%' },
+    { left: '18%', top: '38%', width: '9%', height: '14%' },
+    { left: '28%', top: '38%', width: '9%', height: '14%' },
+    { left: '38%', top: '38%', width: '9%', height: '14%' },
+    { left: '48%', top: '38%', width: '9%', height: '14%' },
+    { left: '58%', top: '38%', width: '9%', height: '14%' },
+    { left: '68%', top: '38%', width: '9%', height: '14%' },
   ],
   arch: { left: '18%', top: '46%', width: '59%', height: '50%' },
   leftRes: { left: '2.5%', top: '34%', width: '13.5%', height: '10%' },
@@ -25,14 +25,14 @@ const Z = {
   leftChar: { left: '2.5%', top: '7%', width: '13.5%', height: '24%' },
   rightDiscard: { left: '82%', top: '7%', width: '15%', height: '12%' },
   rightPlayer: { left: '82%', top: '21%', width: '15%', height: '31%' },
-  rightRes: { left: '82%', top: '55%', width: '15%', height: '11%' },
-  rightChar: { left: '82%', top: '69%', width: '15%', height: '27%' },
+  rightRes: { left: '82%', top: '55%', width: '15%', height: '10%' },
+  rightChar: { left: '82%', top: '68%', width: '15%', height: '28%' },
 };
 
 function ObsCard({ card, scale = 0.42 }: { card: CardInstance; scale?: number }) {
   return (
     <div className="obs-card" style={{ width: 187 * scale, height: 283 * scale }}>
-      <div style={{ scale: String(scale), transformOrigin: 'top left', width: 187 }}>
+      <div style={{ transform: `scale(${scale})`, transformOrigin: 'top left', width: 187 }}>
         <BuilderCard small card={card} />
       </div>
     </div>

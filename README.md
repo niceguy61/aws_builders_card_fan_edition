@@ -23,6 +23,14 @@ with **offline-identical rules**, starting with PVE.
 - 👁 Mat spectator view: `#observer`
 - 🏠 Intro page: `#introduce`
 
+## 📸 Screenshots
+
+| Draft phase | Console market |
+|---|---|
+| ![Draft phase](docs/screenshots/01-draft.png) | ![Console market](docs/screenshots/02-console.png) |
+| Key-rules modal | Player hand & CPU |
+| ![Key-rules modal](docs/screenshots/03-rules.png) | ![Player hand and CPU zone](docs/screenshots/04-hand.png) |
+
 ## ✨ Features
 
 - **Offline-identical rules engine** (`src/game/engine.ts`): 4-phase turns

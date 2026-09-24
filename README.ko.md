@@ -21,6 +21,14 @@
 - 👁 매트 관전 뷰: `#observer`
 - 🏠 소개 페이지: `#introduce`
 
+## 📸 스크린샷
+
+| 드래프트 페이즈 | 콘솔 마켓 |
+|---|---|
+| ![드래프트 페이즈](docs/screenshots/01-draft.png) | ![콘솔 마켓](docs/screenshots/02-console.png) |
+| 핵심 룰 모달 | 내 핸드 & CPU |
+| ![핵심 룰 모달](docs/screenshots/03-rules.png) | ![내 핸드와 CPU 구역](docs/screenshots/04-hand.png) |
+
 ## ✨ 특징
 
 - **오프라인 동일 룰 엔진** (`src/game/engine.ts`): 4페이즈 턴(폐기→건축→도입→정리), EC2 스택, 41종 카드 콤보 전부 구현

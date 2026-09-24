@@ -135,6 +135,23 @@ export default function App() {
 
   useEffect(() => { start([false, true]); }, [start]);
 
+  // ?demo=board: 스크린샷용 오토파일럿 (드래프트 픽 + 전체 내기 1회, 이후 정지)
+  const demoDone = useRef(false);
+  useEffect(() => {
+    if (!window.location.search.includes('demo=board') || demoDone.current) return;
+    if (g.phase === 'DRAFT' && !me?.isBot) {
+      const t = setTimeout(() => {
+        const first = g.consoleFree[0]?.cardId;
+        if (first) draftPick(first);
+      }, 600);
+      return () => clearTimeout(t);
+    }
+    if (g.phase === 'PLAY' && !g.gameOver && !me?.isBot && me.hand.length > 0 && me.played.length === 0) {
+      const t = setTimeout(() => { playAll(); demoDone.current = true; }, 600);
+      return () => clearTimeout(t);
+    }
+  }, [g, me, draftPick, playAll]);
+
   // Bot draft automation
   useEffect(() => {
     if (g.phase === 'DRAFT' && me?.isBot) {

@@ -216,6 +216,7 @@ html,body{margin:0;padding:0;background:linear-gradient(180deg,#6b3fa0 0%,#4a3aa
 .obs-over{position:absolute;top:44%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(180deg,#ffd166,#ff9900);color:#231600;font-size:30px;font-weight:900;border-radius:16px;padding:18px 34px;z-index:10;box-shadow:0 12px 40px rgba(0,0,0,.6)}
 .obs-side{width:290px;flex-shrink:0;background:rgba(0,0,0,.45);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:8px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}
 .obs-side h2{margin:0;font-size:18px}
+.obs-side .pill{align-self:flex-start}
 .obs-feed{display:flex;flex-direction:column;gap:6px}
 .obs-log{max-height:260px}
 .obs-side .btn{margin-top:4px}

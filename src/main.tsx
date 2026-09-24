@@ -15,10 +15,12 @@ function Root() {
   }, []);
   // #observer: 매트 배경 관전 뷰 / #introduce: 소개 페이지 (같은 탭·같은 스토어)
   const view = hash === '#observer' ? <Observer /> : hash === '#introduce' ? <Introduce /> : <App />;
+  // ?static: 스크린샷용 — 모션 즉시 완료 (WAAPI는 가상시간을 안 따름)
+  const statik = window.location.search.includes('static');
   return (
     <StrictMode>
       {/* P0-6: OS 모션 감소 설정을 framer-motion에 전달 */}
-      <MotionConfig reducedMotion="user">{view}</MotionConfig>
+      <MotionConfig reducedMotion={statik ? 'always' : 'user'}>{view}</MotionConfig>
     </StrictMode>
   );
 }
